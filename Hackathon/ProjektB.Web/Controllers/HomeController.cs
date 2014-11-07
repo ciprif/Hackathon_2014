@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProjektB.Web.Infrastructure;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,6 +9,8 @@ namespace ProjektB.Web.Controllers
 {
     public class HomeController : Controller
     {
+        public UnitOfWork UoW { get; set; }
+
         public ActionResult Index()
         {
             return View();
