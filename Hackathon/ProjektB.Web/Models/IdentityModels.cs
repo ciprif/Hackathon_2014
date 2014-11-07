@@ -18,6 +18,13 @@ namespace ProjektB.Web.Models
         }
     }
 
+    public class ToDo
+    {
+        public int ToDoId { get; set; }
+
+        public string Payload { get; set; }
+    }
+
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
@@ -29,5 +36,7 @@ namespace ProjektB.Web.Models
         {
             return new ApplicationDbContext();
         }
+
+        public DbSet<ToDo> ToDos { get; set; }
     }
 }
