@@ -6,6 +6,9 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Google;
 using Owin;
 using ProjektB.Web.Models;
+using System.Configuration;
+using System.Collections.Generic;
+using ProjektB.Web.ConfigSections;
 
 namespace ProjektB.Web
 {
@@ -34,7 +37,7 @@ namespace ProjektB.Web
                         validateInterval: TimeSpan.FromMinutes(30),
                         regenerateIdentity: (manager, user) => user.GenerateUserIdentityAsync(manager))
                 }
-            });            
+            });
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
 
             // Enables the application to temporarily store user information when they are verifying the second factor in the two-factor authentication process.
@@ -54,9 +57,11 @@ namespace ProjektB.Web
             //   consumerKey: "",
             //   consumerSecret: "");
 
-            //app.UseFacebookAuthentication(
-            //   appId: "",
-            //   appSecret: "");
+            var authSection = (AuthSection)ConfigurationManager.GetSection("authApplication");
+
+            app.UseFacebookAuthentication(
+               appId: authSection.Application.AppId,
+               appSecret: authSection.Application.appKey);
 
             //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             //{
