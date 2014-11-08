@@ -10,9 +10,12 @@ namespace ProjektB.Web.Controllers
 {
     public class HomeController : Controller
     {
+        /// <summary>
+        /// do not use dirrectly.
+        /// </summary>
         private Lazy<UnitOfWork> _lazyUoW;
 
-        public UnitOfWork UoW { get { return _lazyUoW.Value; } }
+        protected UnitOfWork UoW { get { return _lazyUoW.Value; } }
 
         public Repository Repository { get; set; }
 
@@ -24,6 +27,7 @@ namespace ProjektB.Web.Controllers
         public ActionResult Index()
         {
             var todos = Repository.ToDos.ToList();
+            
 
             Repository.ToDos.Add(new ToDo { Payload = "tralala" });
 
