@@ -9,12 +9,24 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using ProjektB.Web.Models;
+using Castle.Core.Logging;
 
 namespace ProjektB.Web.Controllers
 {
     [Authorize]
     public class AccountController : Controller
     {
+        /// <summary>
+        /// Logger
+        /// </summary>
+        private ILogger logger = NullLogger.Instance;
+
+        protected ILogger Logger
+        {
+            get { return logger; }
+            set { logger = value; }
+        }
+
         private ApplicationUserManager _userManager;
 
         public AccountController()
@@ -23,6 +35,7 @@ namespace ProjektB.Web.Controllers
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
         {
+            Logger.Debug("AccountController.");
             UserManager = userManager;
             SignInManager = signInManager;
         }
@@ -66,6 +79,7 @@ namespace ProjektB.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
+            Logger.Debug("AccountController Login.");
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -94,6 +108,7 @@ namespace ProjektB.Web.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> VerifyCode(string provider, string returnUrl, bool rememberMe)
         {
+            Logger.Debug("AccountController Get VerifyCode.");
             // Require that the user has already logged in via username/password or external login
             if (!await SignInManager.HasBeenVerifiedAsync())
             {
@@ -114,6 +129,7 @@ namespace ProjektB.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> VerifyCode(VerifyCodeViewModel model)
         {
+            Logger.Debug("AccountController Post VerifyCode.");
             if (!ModelState.IsValid)
             {
                 return View(model);

@@ -1,4 +1,5 @@
-﻿using Castle.MicroKernel.Registration;
+﻿using Castle.Facilities.Logging;
+using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
 using ProjektB.Web.Models;
@@ -16,6 +17,7 @@ namespace ProjektB.Web.Infrastructure
             
             container.Register(Component.For<UnitOfWork>().LifestylePerWebRequest());
             container.Register(Component.For<Repository>().LifestyleTransient());
+            container.AddFacility<LoggingFacility>(f => f.LogUsing(LoggerImplementation.NLog));
         }
     }
 }

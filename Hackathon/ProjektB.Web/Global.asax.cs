@@ -1,4 +1,5 @@
-﻿using Castle.Windsor;
+﻿using Castle.Core.Logging;
+using Castle.Windsor;
 using ProjektB.Web.App_Start;
 using ProjektB.Web.Infrastructure;
 using System;
@@ -15,6 +16,17 @@ namespace ProjektB.Web
 {
     public class MvcApplication : System.Web.HttpApplication
     {
+        /// <summary>
+        /// Logger
+        /// </summary>
+        private ILogger logger = NullLogger.Instance;
+
+        protected ILogger Logger
+        {
+            get { return logger; }
+            set { logger = value; }
+        }
+
         public static WindsorContainer Container { get; set; }
 
         protected void Application_Start()
