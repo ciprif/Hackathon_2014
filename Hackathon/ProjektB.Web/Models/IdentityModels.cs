@@ -3,6 +3,8 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using ProjektB.Web.Infrastructure;
+using System.Threading;
 
 namespace ProjektB.Web.Models
 {
@@ -38,5 +40,53 @@ namespace ProjektB.Web.Models
         }
 
         public DbSet<ToDo> ToDos { get; set; }
+    }
+
+    public class Repository
+    {
+        private const string DBContextKey = "DB_CONTEXT";
+        private const string DBTransactionKey = "DB_TRANSACTION";
+
+        /// <summary>
+        /// Do not use dirrectly in the code. Use the Context property instead.
+        /// </summary>
+        private ApplicationDbContext _context;
+
+        public UnitOfWork UoW {get; set;}
+
+        protected ApplicationDbContext Context
+        {
+            get
+            {
+                ApplicationDbContext context = UoW.Get<ApplicationDbContext>(DBContextKey);
+                
+                if (context == null)
+                {
+                    context = new ApplicationDbContext();
+                    UoW[DBContextKey] = context;
+                    DbContextTransaction tran = context.Database.BeginTransaction();
+                    UoW[DBTransactionKey] = tran;
+                }
+
+                return context;
+            }
+        }
+
+        public IDbSet<ToDo> ToDos { get { return Context.ToDos; } }
+
+        public int SaveChanges()
+        {
+            return Context.SaveChanges();
+        }
+
+        public async Task<int> SaveChangesAsync()
+        {
+            return await Context.SaveChangesAsync();
+        }
+
+        public async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
+        {
+            return await Context.SaveChangesAsync(cancellationToken);
+        }
     }
 }

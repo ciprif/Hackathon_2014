@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Castle.Windsor;
+using ProjektB.Web.App_Start;
+using ProjektB.Web.Infrastructure;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -12,6 +15,8 @@ namespace ProjektB.Web
 {
     public class MvcApplication : System.Web.HttpApplication
     {
+        public static WindsorContainer Container { get; set; }
+
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
@@ -19,6 +24,13 @@ namespace ProjektB.Web
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+        }
+
+        public void Application_Error(Object sender, EventArgs e)
+        {
+            UnitOfWork uoc = Container.Resolve<UnitOfWork>();
+            uoc.Rollback();
+            //TODO: don't forget to treat the error here
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using ProjektB.Web.Infrastructure;
+using ProjektB.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +10,25 @@ namespace ProjektB.Web.Controllers
 {
     public class HomeController : Controller
     {
-        public UnitOfWork UoW { get; set; }
+        private Lazy<UnitOfWork> _lazyUoW;
+
+        public UnitOfWork UoW { get { return _lazyUoW.Value; } }
+
+        public Repository Repository { get; set; }
+
+        public HomeController(Lazy<UnitOfWork> lazyUoW)
+        {
+            _lazyUoW = lazyUoW;
+        }
 
         public ActionResult Index()
         {
+            var todos = Repository.ToDos.ToList();
+
+            Repository.ToDos.Add(new ToDo { Payload = "tralala" });
+
+            //throw new Exception();
+
             return View();
         }
 
