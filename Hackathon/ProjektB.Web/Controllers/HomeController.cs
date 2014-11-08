@@ -64,5 +64,37 @@ namespace ProjektB.Web.Controllers
 
             return View();
         }
+
+        public ActionResult ToDoS()
+        {
+            Logger.Debug("ToDos");
+
+            ToDosViewModel toDos = new ToDosViewModel();
+
+            toDos.Items = Repository.ToDos.ToList()
+                .Select(x => new ToDoViewModel
+                {
+                    ItemNumber = x.ToDoId,
+                    ItemValue = x.Payload
+                }).ToList();
+
+            return View(toDos);
+        }
+
+        public ActionResult AddToDo()
+        {
+            Logger.Debug("AddToDo");
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult AddToDo(ToDoViewModel model)
+        {
+            Logger.Debug("AddToDo");
+
+            Repository.ToDos.Add(new ToDo { Payload = model.ItemValue });
+
+            return RedirectToAction("ToDoS");
+        }
     }
 }

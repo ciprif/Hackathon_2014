@@ -1,0 +1,24 @@
+﻿@using ProjektB.Web.Models
+@model ToDosViewModel
+@{
+    ViewBag.Title = "ToDoS Page";
+}
+
+<div class="panel panel-default">
+    <!-- Default panel contents -->
+    <div class="panel-heading">Panel heading</div>
+    <div class="panel-body">
+        <p>...</p>
+    </div>
+    <table class="table">
+        <tbody>
+            @foreach (var item in Model.Items)
+            {
+                <tr>
+                    <td>@item.ItemNumber</td>
+                    <td>@item.ItemValue</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
