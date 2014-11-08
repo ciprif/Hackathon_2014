@@ -5,11 +5,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Castle.Core.Logging;
 
 namespace ProjektB.Web.Controllers
 {
     public class HomeController : Controller
     {
+        /// <summary>
+        /// Logger
+        /// </summary>
+        private ILogger logger = NullLogger.Instance;
+        
+        protected ILogger Logger
+        {
+            get { return logger; }
+            set { logger = value; }
+        }
+
         /// <summary>
         /// do not use dirrectly.
         /// </summary>
@@ -26,6 +38,7 @@ namespace ProjektB.Web.Controllers
 
         public ActionResult Index()
         {
+            Logger.Debug("IndexPage.");
             var todos = Repository.ToDos.ToList();
             
 
@@ -38,6 +51,7 @@ namespace ProjektB.Web.Controllers
 
         public ActionResult About()
         {
+            Logger.Debug("AboutPage.");
             ViewBag.Message = "Your application description page.";
 
             return View();
@@ -45,6 +59,7 @@ namespace ProjektB.Web.Controllers
 
         public ActionResult Contact()
         {
+            Logger.Debug("ContactPage.");
             ViewBag.Message = "Your contact page.";
 
             return View();
