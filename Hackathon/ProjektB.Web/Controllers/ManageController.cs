@@ -7,12 +7,24 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using ProjektB.Web.Models;
+using Castle.Core.Logging;
 
 namespace ProjektB.Web.Controllers
 {
     [Authorize]
     public class ManageController : Controller
     {
+        /// <summary>
+        /// Logger
+        /// </summary>
+        private ILogger logger = NullLogger.Instance;
+
+        public ILogger Logger
+        {
+            get { return logger; }
+            set { logger = value; }
+        }
+
         public ManageController()
         {
         }
@@ -63,6 +75,7 @@ namespace ProjektB.Web.Controllers
         // GET: /Manage/RemoveLogin
         public ActionResult RemoveLogin()
         {
+            Logger.Debug("ManageController GET RemoveLogin.");
             var linkedAccounts = UserManager.GetLogins(User.Identity.GetUserId());
             ViewBag.ShowRemoveButton = HasPassword() || linkedAccounts.Count > 1;
             return View(linkedAccounts);
@@ -74,6 +87,7 @@ namespace ProjektB.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> RemoveLogin(string loginProvider, string providerKey)
         {
+            Logger.Debug("ManageController POST RemoveLogin.");
             ManageMessageId? message;
             var result = await UserManager.RemoveLoginAsync(User.Identity.GetUserId(), new UserLoginInfo(loginProvider, providerKey));
             if (result.Succeeded)
@@ -105,6 +119,7 @@ namespace ProjektB.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> AddPhoneNumber(AddPhoneNumberViewModel model)
         {
+            Logger.Debug("ManageController POST AddPhoneNumber.");
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -128,6 +143,7 @@ namespace ProjektB.Web.Controllers
         [HttpPost]
         public async Task<ActionResult> EnableTwoFactorAuthentication()
         {
+            Logger.Debug("ManageController POST EnableTwoFactorAuthentication.");
             await UserManager.SetTwoFactorEnabledAsync(User.Identity.GetUserId(), true);
             var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
             if (user != null)
@@ -142,6 +158,7 @@ namespace ProjektB.Web.Controllers
         [HttpPost]
         public async Task<ActionResult> DisableTwoFactorAuthentication()
         {
+            Logger.Debug("ManageController POST DisableTwoFactorAuthentication.");
             await UserManager.SetTwoFactorEnabledAsync(User.Identity.GetUserId(), false);
             var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
             if (user != null)
@@ -155,6 +172,7 @@ namespace ProjektB.Web.Controllers
         // GET: /Manage/VerifyPhoneNumber
         public async Task<ActionResult> VerifyPhoneNumber(string phoneNumber)
         {
+            Logger.Debug("ManageController GET VerifyPhoneNumber.");
             var code = await UserManager.GenerateChangePhoneNumberTokenAsync(User.Identity.GetUserId(), phoneNumber);
             // Send an SMS through the SMS provider to verify the phone number
             return phoneNumber == null ? View("Error") : View(new VerifyPhoneNumberViewModel { PhoneNumber = phoneNumber });
@@ -166,6 +184,7 @@ namespace ProjektB.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> VerifyPhoneNumber(VerifyPhoneNumberViewModel model)
         {
+            Logger.Debug("ManageController POST VerifyPhoneNumber.");
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -189,6 +208,7 @@ namespace ProjektB.Web.Controllers
         // GET: /Manage/RemovePhoneNumber
         public async Task<ActionResult> RemovePhoneNumber()
         {
+            Logger.Debug("ManageController GET RemovePhoneNumber.");
             var result = await UserManager.SetPhoneNumberAsync(User.Identity.GetUserId(), null);
             if (!result.Succeeded)
             {
@@ -206,6 +226,7 @@ namespace ProjektB.Web.Controllers
         // GET: /Manage/ChangePassword
         public ActionResult ChangePassword()
         {
+            Logger.Debug("ManageController GET ChangePassword.");
             return View();
         }
 
@@ -215,6 +236,7 @@ namespace ProjektB.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
         {
+            Logger.Debug("ManageController POST ChangePassword.");
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -237,6 +259,7 @@ namespace ProjektB.Web.Controllers
         // GET: /Manage/SetPassword
         public ActionResult SetPassword()
         {
+            Logger.Debug("ManageController GET SetPassword.");
             return View();
         }
 
@@ -246,6 +269,7 @@ namespace ProjektB.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> SetPassword(SetPasswordViewModel model)
         {
+            Logger.Debug("ManageController POST SetPassword.");
             if (ModelState.IsValid)
             {
                 var result = await UserManager.AddPasswordAsync(User.Identity.GetUserId(), model.NewPassword);
@@ -269,6 +293,7 @@ namespace ProjektB.Web.Controllers
         // GET: /Manage/ManageLogins
         public async Task<ActionResult> ManageLogins(ManageMessageId? message)
         {
+            Logger.Debug("ManageController GET ManageLogins.");
             ViewBag.StatusMessage =
                 message == ManageMessageId.RemoveLoginSuccess ? "The external login was removed."
                 : message == ManageMessageId.Error ? "An error has occurred."
@@ -294,6 +319,7 @@ namespace ProjektB.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LinkLogin(string provider)
         {
+            Logger.Debug("ManageController POST LinkLogin.");
             // Request a redirect to the external login provider to link a login for the current user
             return new AccountController.ChallengeResult(provider, Url.Action("LinkLoginCallback", "Manage"), User.Identity.GetUserId());
         }
@@ -302,6 +328,7 @@ namespace ProjektB.Web.Controllers
         // GET: /Manage/LinkLoginCallback
         public async Task<ActionResult> LinkLoginCallback()
         {
+            Logger.Debug("ManageController GET LinkLoginCallback.");
             var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync(XsrfKey, User.Identity.GetUserId());
             if (loginInfo == null)
             {

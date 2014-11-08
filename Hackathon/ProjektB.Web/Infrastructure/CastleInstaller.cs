@@ -14,7 +14,6 @@ namespace ProjektB.Web.Infrastructure
     {
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
-            
             container.Register(Component.For<UnitOfWork>().LifestylePerWebRequest());
             container.Register(Component.For<Repository>().LifestyleTransient());
             container.AddFacility<LoggingFacility>(f => f.LogUsing(LoggerImplementation.NLog));

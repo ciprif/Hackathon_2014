@@ -15,8 +15,8 @@ namespace ProjektB.Web.Controllers
         /// Logger
         /// </summary>
         private ILogger logger = NullLogger.Instance;
-        
-        protected ILogger Logger
+
+        public ILogger Logger
         {
             get { return logger; }
             set { logger = value; }

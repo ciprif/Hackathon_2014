@@ -21,7 +21,7 @@ namespace ProjektB.Web.Controllers
         /// </summary>
         private ILogger logger = NullLogger.Instance;
 
-        protected ILogger Logger
+        public ILogger Logger
         {
             get { return logger; }
             set { logger = value; }
@@ -57,6 +57,7 @@ namespace ProjektB.Web.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+            Logger.Debug("AccountController GET Login.");
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
@@ -79,7 +80,7 @@ namespace ProjektB.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
-            Logger.Debug("AccountController Login.");
+            Logger.Debug("AccountController POST Login.");
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -108,7 +109,7 @@ namespace ProjektB.Web.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> VerifyCode(string provider, string returnUrl, bool rememberMe)
         {
-            Logger.Debug("AccountController Get VerifyCode.");
+            Logger.Debug("AccountController GET VerifyCode.");
             // Require that the user has already logged in via username/password or external login
             if (!await SignInManager.HasBeenVerifiedAsync())
             {
@@ -129,7 +130,7 @@ namespace ProjektB.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> VerifyCode(VerifyCodeViewModel model)
         {
-            Logger.Debug("AccountController Post VerifyCode.");
+            Logger.Debug("AccountController POST VerifyCode.");
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -158,6 +159,7 @@ namespace ProjektB.Web.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
+            Logger.Debug("AccountController GET Register.");
             return View();
         }
 
@@ -168,6 +170,7 @@ namespace ProjektB.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
+            Logger.Debug("AccountController POST Register.");
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
@@ -196,6 +199,7 @@ namespace ProjektB.Web.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> ConfirmEmail(string userId, string code)
         {
+            Logger.Debug("AccountController GET ConfirmEmail.");
             if (userId == null || code == null)
             {
                 return View("Error");
@@ -209,6 +213,7 @@ namespace ProjektB.Web.Controllers
         [AllowAnonymous]
         public ActionResult ForgotPassword()
         {
+            Logger.Debug("AccountController GET ForgotPassword.");
             return View();
         }
 
@@ -219,6 +224,7 @@ namespace ProjektB.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ForgotPassword(ForgotPasswordViewModel model)
         {
+            Logger.Debug("AccountController POST ForgotPassword.");
             if (ModelState.IsValid)
             {
                 var user = await UserManager.FindByNameAsync(model.Email);
@@ -245,6 +251,7 @@ namespace ProjektB.Web.Controllers
         [AllowAnonymous]
         public ActionResult ForgotPasswordConfirmation()
         {
+            Logger.Debug("AccountController GET ForgotPasswordConfirmation.");
             return View();
         }
 
@@ -253,6 +260,7 @@ namespace ProjektB.Web.Controllers
         [AllowAnonymous]
         public ActionResult ResetPassword(string code)
         {
+            Logger.Debug("AccountController GET ResetPassword.");
             return code == null ? View("Error") : View();
         }
 
@@ -263,6 +271,7 @@ namespace ProjektB.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ResetPassword(ResetPasswordViewModel model)
         {
+            Logger.Debug("AccountController POST ResetPassword.");
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -287,6 +296,7 @@ namespace ProjektB.Web.Controllers
         [AllowAnonymous]
         public ActionResult ResetPasswordConfirmation()
         {
+            Logger.Debug("AccountController GET ResetPasswordConfirmation.");
             return View();
         }
 
@@ -297,6 +307,7 @@ namespace ProjektB.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ExternalLogin(string provider, string returnUrl)
         {
+            Logger.Debug("AccountController POST ExternalLogin.");
             // Request a redirect to the external login provider
             return new ChallengeResult(provider, Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl }));
         }
@@ -306,6 +317,7 @@ namespace ProjektB.Web.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> SendCode(string returnUrl, bool rememberMe)
         {
+            Logger.Debug("AccountController GET SendCode.");
             var userId = await SignInManager.GetVerifiedUserIdAsync();
             if (userId == null)
             {
@@ -323,6 +335,7 @@ namespace ProjektB.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> SendCode(SendCodeViewModel model)
         {
+            Logger.Debug("AccountController POST SendCode.");
             if (!ModelState.IsValid)
             {
                 return View();
@@ -341,6 +354,7 @@ namespace ProjektB.Web.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
         {
+            Logger.Debug("AccountController GET ExternalLoginCallback.");
             var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync();
             if (loginInfo == null)
             {
@@ -373,6 +387,7 @@ namespace ProjektB.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model, string returnUrl)
         {
+            Logger.Debug("AccountController POST ExternalLoginCallback.");
             if (User.Identity.IsAuthenticated)
             {
                 return RedirectToAction("Index", "Manage");
@@ -410,6 +425,7 @@ namespace ProjektB.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
+            Logger.Debug("AccountController POST LogOff.");
             AuthenticationManager.SignOut();
             return RedirectToAction("Index", "Home");
         }
@@ -419,6 +435,7 @@ namespace ProjektB.Web.Controllers
         [AllowAnonymous]
         public ActionResult ExternalLoginFailure()
         {
+            Logger.Debug("AccountController GET ExternalLoginFailure.");
             return View();
         }
 

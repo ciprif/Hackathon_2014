@@ -16,16 +16,6 @@ namespace ProjektB.Web
 {
     public class MvcApplication : System.Web.HttpApplication
     {
-        /// <summary>
-        /// Logger
-        /// </summary>
-        private ILogger logger = NullLogger.Instance;
-
-        protected ILogger Logger
-        {
-            get { return logger; }
-            set { logger = value; }
-        }
 
         public static WindsorContainer Container { get; set; }
 
@@ -42,7 +32,12 @@ namespace ProjektB.Web
         {
             UnitOfWork uoc = Container.Resolve<UnitOfWork>();
             uoc.Rollback();
+
+            Exception ext = Server.GetLastError();
+
             //TODO: don't forget to treat the error here
+
+            (Container.Resolve<ILogger>()??NullLogger.Instance).Debug("An error has occured: " + ext);
         }
     }
 }
