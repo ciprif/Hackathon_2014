@@ -10,13 +10,18 @@ namespace ProjektB.Web.Models.FitnessProviderModels
         Steps, Calories, Distance
     }
 
+    public enum ActivityType
+    {
+        Running, Walking, Flexible, Cycling
+    }
+
     public class ActivityValue
     {
         public ActivityUnit Unit { get; set; }
-        public int Value { get; set; }
+        public double Value { get; set; }
     }
 
-    public interface Activity
+    public interface IActivity
     {
         int ID { get; set; }
         string Name { get; set; }
@@ -25,5 +30,6 @@ namespace ProjektB.Web.Models.FitnessProviderModels
         DateTimeOffset Timestamp { get; set; }
         List<ActivityValue> Values { get; set; }
         string Provider { get; set; }
+        ActivityType ActivityType { get; set; }
     }
 }

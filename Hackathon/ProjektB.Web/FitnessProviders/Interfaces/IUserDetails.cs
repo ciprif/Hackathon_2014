@@ -17,11 +17,11 @@ namespace ProjektB.Web.FitnessProviders.Interfaces
         string DisplayName { get; set; }
         string UserName { get; set; }
         string Email { get; set; }
-        TimeZone TimeZone { get; set; }
         DateTime Birthday { get; set; }
         Gender Gender { get; set; }
-        List<Activity> Activities { get; set; }
+        List<IActivity> Activities { get; set; }
         string ImagePath { get; set; }
         IUserStats UserStats { get; set; }
+        IUserLocation Location { get; set; }
     }
 }

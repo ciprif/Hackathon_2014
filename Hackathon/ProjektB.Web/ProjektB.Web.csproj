@@ -219,7 +219,10 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="Controllers\TeamsController.cs" />
+    <Compile Include="FitnessProviders\MapMyFitness\Models\MapMyFitnessActivity.cs" />
+    <Compile Include="FitnessProviders\MapMyFitness\Models\MapMyFitnessLocation.cs" />
     <Compile Include="FitnessProviders\MapMyFitness\Models\MapMyFitnessUser.cs" />
+    <Compile Include="FitnessProviders\MapMyFitness\Models\MyFitnessUserStats.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
