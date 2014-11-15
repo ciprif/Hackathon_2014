@@ -59,6 +59,9 @@
     <Reference Include="Castle.Windsor.Web.Mvc">
       <HintPath>..\packages\Castle.Windsor.Web.Mvc.1.0.7\lib\net40\Castle.Windsor.Web.Mvc.dll</HintPath>
     </Reference>
+    <Reference Include="Fitbit">
+      <HintPath>libs\Fitbit.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Owin, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -102,6 +105,9 @@
     </Reference>
     <Reference Include="NLog">
       <HintPath>..\packages\NLog.3.1.0.0\lib\net45\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp">
+      <HintPath>libs\RestSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -235,6 +241,7 @@
     <Compile Include="FitnessProviders\FitnessProviderModels\Activity.cs" />
     <Compile Include="Models\ActivityViewModel.cs" />
     <Compile Include="Models\FitnessProvider.cs" />
+    <Compile Include="Models\FitnessProviderFBPayload.cs" />
     <Compile Include="Models\FitnessProviderPayload.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -252,6 +259,7 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\fitbit-1024-blk-onwhite.jpg" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
