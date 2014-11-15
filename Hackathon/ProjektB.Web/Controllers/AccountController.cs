@@ -41,7 +41,7 @@ namespace ProjektB.Web.Controllers
 
         public AccountController(Lazy<Repository> lazyRepository)
         {
-            this.lazyRepository;
+            this.lazyRepository = lazyRepository;
         }
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
