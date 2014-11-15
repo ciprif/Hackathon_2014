@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using Castle.Core.Logging;
 using System.Threading.Tasks;
+using Microsoft.AspNet.Identity;
 using ProjektB.Web.SyncModules;
 
 namespace ProjektB.Web.Controllers
@@ -23,7 +24,7 @@ namespace ProjektB.Web.Controllers
             get { return logger; }
             set { logger = value; }
         }
-        
+
         /// <summary>
         /// do not use dirrectly.
         /// </summary>
@@ -40,6 +41,13 @@ namespace ProjektB.Web.Controllers
 
         public async Task<ActionResult> Index()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                string userId = User.Identity.GetUserId();
+                ViewBag.HasProviders = Repository.FitnessProviders.Where(p => p.ApplicationUserId == userId).Count() > 0;
+                ViewBag.HasTeam = Repository.UserDetails.Where(u => u.ApplicationUserId == userId).Count() > 0;
+            }
+
             SyncModule syncModule = new SyncModule();
             await syncModule.Sync();
 

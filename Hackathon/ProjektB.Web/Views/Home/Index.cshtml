@@ -15,8 +15,15 @@
         <p><a href="Account/Login" class="btn btn-primary btn-lg">Log in &raquo;</a></p>
     }
 
-    @*@if ( (new Repository()).FitnessProviders.Where(p=>p.ApplicationUserId == Request.LogonUserIdentity.User.)
+    @if (ViewBag.HasProviders != null && !ViewBag.HasProviders)
     {
-
-    }*@
+        <p><a href="Account/AddProviders" class="btn btn-primary btn-lg">Add Providers &raquo;</a></p>
+    }
+    else
+    {
+        if (ViewBag.HasTeam != null && !ViewBag.HasTeam)
+        {
+            <p><a href="Teams/Create" class="btn btn-primary btn-lg">Create a Team &raquo;</a> or <a href="Teams/Join" class="btn btn-primary btn-lg">Join a Team &raquo;</a></p>
+        }
+    }
 </div>

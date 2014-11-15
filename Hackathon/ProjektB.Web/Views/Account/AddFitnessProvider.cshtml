@@ -1,0 +1,14 @@
+﻿
+@{
+    ViewBag.Title = "AddFitnessProvider";
+
+    string key = "f34nz6t9h3unxp4s46bs2jg8py7kvq3e";
+    string redirect_uri = "http://localhost:49429/account/addfitnessprovider";
+    string authorize_url = "https://www.mapmyfitness.com/v7.0/oauth2/authorize/?client_id={0}&response_type=code&redirect_uri={1}";
+    string mapMyFitnessUrl = string.Format(authorize_url, key, redirect_uri);
+    
+}
+
+<h2>AddFitnessProvider</h2>
+
+<a href="@Html.Raw(mapMyFitnessUrl)">Click here!</a>
