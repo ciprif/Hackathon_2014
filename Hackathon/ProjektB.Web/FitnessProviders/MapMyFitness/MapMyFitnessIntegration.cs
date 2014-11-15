@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Web;
-using System.Web.Script.Serialization;
 using System.Net.Http.Headers;
+using Newtonsoft.Json.Linq;
 
 namespace ProjektB.Web.FitnessProviders
 {
@@ -29,8 +29,7 @@ namespace ProjektB.Web.FitnessProviders
 
                 if(response.IsSuccessStatusCode)
                 {
-                    JavaScriptSerializer serializer = new JavaScriptSerializer();
-                    object Content = await response.Content.ReadAsAsync(typeof(Object));
+                    JObject Content = await response.Content.ReadAsAsync<JObject>();
 
                     UserInformation = new MapMyFitnessUser
                     {

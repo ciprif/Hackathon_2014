@@ -9,6 +9,7 @@ using ProjektB.Web.Models;
 using System.Configuration;
 using System.Collections.Generic;
 using ProjektB.Web.ConfigSections;
+using System.Linq;
 
 namespace ProjektB.Web
 {
@@ -58,10 +59,20 @@ namespace ProjektB.Web
             //   consumerSecret: "");
 
             var authSection = (AuthSection)ConfigurationManager.GetSection("authApplication");
+            if (authSection != null)
+            {
+                var facebookAuth = (from AuthApplication auth in authSection.Applications
+                                   where auth.Type == AuthType.Facebook
+                                   select auth).FirstOrDefault();
 
-            app.UseFacebookAuthentication(
-               appId: authSection.Application.AppId,
-               appSecret: authSection.Application.appKey);
+                if (facebookAuth != null)
+                {
+                    app.UseFacebookAuthentication(
+                                     appId: facebookAuth.AppId,
+                                     appSecret: facebookAuth.appKey);
+                }
+            }
+
 
             //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             //{
