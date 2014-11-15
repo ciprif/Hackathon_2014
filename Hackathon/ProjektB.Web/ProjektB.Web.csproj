@@ -332,7 +332,6 @@
     <Content Include="Views\FitnessProviders\Details.cshtml" />
     <Content Include="Views\FitnessProviders\Edit.cshtml" />
     <Content Include="Views\FitnessProviders\Index.cshtml" />
-    <Content Include="Views\Home\Wizzard.cshtml" />
     <Content Include="Views\Account\AddFitnessProvider.cshtml" />
   </ItemGroup>
   <ItemGroup>
