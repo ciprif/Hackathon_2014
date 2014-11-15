@@ -47,6 +47,8 @@ namespace ProjektB.Web.Models
         public DbSet<UserDetail> UserDetails { get; set; }
 
         public DbSet<FitnessProvider> FitnessProviders { get; set; }
+        
+        public DbSet<UserActivity> UserActivities { get; set; }
 
     }
 
@@ -85,6 +87,7 @@ namespace ProjektB.Web.Models
         public IDbSet<UserDetail> UserDetails { get { return Context.UserDetails; } }
         public IDbSet<FitnessProvider> FitnessProviders { get { return Context.FitnessProviders; } }
         public IDbSet<ApplicationUser> Users { get { return Context.Users; } }
+        public IDbSet<UserActivity> UserActivities { get { return Context.UserActivities; } }
 
         public int SaveChanges()
         {

@@ -47,6 +47,11 @@ namespace ProjektB.Web.SyncModules
                             case ProviderType.MapMyFitness:
                                 MapMyFitnessUser myFitnessUser = (MapMyFitnessUser)(await MapMyFitness.GetAuthenticatedUser("f34nz6t9h3unxp4s46bs2jg8py7kvq3e", provider.ConnectionDetails));
                                 myFitnessUser.Activities = await MapMyFitness.GetWorkoutByUserId("f34nz6t9h3unxp4s46bs2jg8py7kvq3e", provider.ConnectionDetails, myFitnessUser.UserId);
+                                
+                                foreach(MapMyFitnessActivity act in myFitnessUser.Activities)
+                                {
+                                }
+
                                 break;
                         }
                     }
