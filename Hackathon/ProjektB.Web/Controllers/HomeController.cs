@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Castle.Core.Logging;
+using System.Threading.Tasks;
 
 namespace ProjektB.Web.Controllers
 {
@@ -38,6 +39,9 @@ namespace ProjektB.Web.Controllers
 
         public ActionResult Index()
         {
+            //Task task = new Task(() => IntegrationController.GetAuthenticatedUserDetails());
+            //task.Start();
+ 
             Logger.Debug("IndexPage.");
             var todos = Repository.ToDos.ToList();
             
