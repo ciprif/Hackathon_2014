@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Web.Http;
 using ProjektB.Web.Models.FitnessProviderModels;
 using System.Threading.Tasks;
+using ProjektB.Web.SyncModules;
 
 namespace ProjektB.Web.Controllers
 {
@@ -30,7 +31,9 @@ namespace ProjektB.Web.Controllers
         [ActionName("Activity")]
         public async Task<IHttpActionResult> GetActivity()
         {
-            // method to be called from scheduler
+            SyncModule syncModule = new SyncModule();
+            await syncModule.Sync();
+
             return Ok();
         }
     }
