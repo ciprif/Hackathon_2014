@@ -23,7 +23,7 @@
     {
         if (ViewBag.HasTeam != null && !ViewBag.HasTeam)
         {
-            <p><a href="Teams/Create" class="btn btn-primary btn-lg">Create a Team &raquo;</a> or <a href="Teams" class="btn btn-primary btn-lg">Join a Team &raquo;</a></p>
+            <p>@Html.ActionLink("Join a Team »", "Index", "Teams", null, new { @class = "btn btn-primary" })</p>
         }
     }
 </div>

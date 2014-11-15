@@ -39,16 +39,13 @@ namespace ProjektB.Web.Controllers
             _lazyUoW = lazyUoW;
         }
 
-        public async Task<ActionResult> Index()
+        public ActionResult Index()
         {
             if (User.Identity.IsAuthenticated)
             {
                 ViewBag.HasProviders = Repository.FitnessProviders.Where(p => p.ApplicationUserId == UserId).Count() > 0;
                 ViewBag.HasTeam = Repository.UserDetails.Where(u => u.ApplicationUserId == UserId).Count() > 0;
             }
-
-            SyncModule syncModule = new SyncModule();
-            await syncModule.Sync();
 
             return View();
         }
