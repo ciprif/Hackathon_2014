@@ -5,15 +5,31 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using ProjektB.Web.Models.FitnessProviderModels;
+using System.Threading.Tasks;
 
 namespace ProjektB.Web.Controllers
 {
     public class IntegrationController : ApiController
     {
         // GET: api/Integration/5
-        public string GetActivityById(int id)
+        [HttpGet]
+        [ActionName("Activity")]
+        public async Task<IHttpActionResult> GetActivityById(string id)
         {
-            return "value";
+            Object result = new
+            {
+                needsMovement = true
+            };
+
+            return Json(result);
+        }
+
+        [HttpGet]
+        [ActionName("Activity")]
+        public async Task<IHttpActionResult> GetActivity()
+        {
+            // method to be called from scheduler
+            return Ok();
         }
     }
 }
