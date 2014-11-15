@@ -198,6 +198,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\FitnessProvidersController.cs" />
     <Compile Include="FitnessProviders\Interfaces\IUserDetails.cs" />
     <Compile Include="FitnessProviders\Interfaces\IUserLocation.cs" />
     <Compile Include="FitnessProviders\Interfaces\IUserStats.cs" />
@@ -322,6 +323,11 @@
     <Content Include="Views\Teams\Details.cshtml" />
     <Content Include="Views\Teams\Edit.cshtml" />
     <Content Include="Views\Teams\Index.cshtml" />
+    <Content Include="Views\FitnessProviders\Create.cshtml" />
+    <Content Include="Views\FitnessProviders\Delete.cshtml" />
+    <Content Include="Views\FitnessProviders\Details.cshtml" />
+    <Content Include="Views\FitnessProviders\Edit.cshtml" />
+    <Content Include="Views\FitnessProviders\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
