@@ -2,6 +2,7 @@
 using Castle.Windsor;
 using ProjektB.Web.App_Start;
 using ProjektB.Web.Infrastructure;
+using ProjektB.Web.SyncModules;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;

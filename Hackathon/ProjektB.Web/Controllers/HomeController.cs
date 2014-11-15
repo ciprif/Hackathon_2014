@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using Castle.Core.Logging;
 using System.Threading.Tasks;
+using ProjektB.Web.SyncModules;
 
 namespace ProjektB.Web.Controllers
 {
@@ -22,7 +23,7 @@ namespace ProjektB.Web.Controllers
             get { return logger; }
             set { logger = value; }
         }
-
+        
         /// <summary>
         /// do not use dirrectly.
         /// </summary>
@@ -37,8 +38,11 @@ namespace ProjektB.Web.Controllers
             _lazyUoW = lazyUoW;
         }
 
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
+            SyncModule syncModule = new SyncModule();
+            await syncModule.Sync();
+
             return View();
         }
 

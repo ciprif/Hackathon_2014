@@ -84,6 +84,7 @@ namespace ProjektB.Web.Models
         public IDbSet<Team> Teams { get { return Context.Teams; } }
         public IDbSet<UserDetail> UserDetails { get { return Context.UserDetails; } }
         public IDbSet<FitnessProvider> FitnessProviders { get { return Context.FitnessProviders; } }
+        public IDbSet<ApplicationUser> Users { get { return Context.Users; } }
 
         public int SaveChanges()
         {
