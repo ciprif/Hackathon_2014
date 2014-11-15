@@ -12,13 +12,9 @@ namespace ProjektB.Web.Controllers
     public class IntegrationController : ApiController
     {
         // GET: api/Integration/5
-        public string GetActivityById(int id)
-        {
-            return "value";
-        }
-
         [HttpGet]
-        public async Task<IHttpActionResult> Status(string userIdHash)
+        [ActionName("Activity")]
+        public async Task<IHttpActionResult> GetActivityById(string id)
         {
             Object result = new
             {
@@ -26,6 +22,14 @@ namespace ProjektB.Web.Controllers
             };
 
             return Json(result);
+        }
+
+        [HttpGet]
+        [ActionName("Activity")]
+        public async Task<IHttpActionResult> GetActivity()
+        {
+            // method to be called from scheduler
+            return Ok();
         }
     }
 }
