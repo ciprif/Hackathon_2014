@@ -233,6 +233,7 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="FitnessProviders\FitnessProviderModels\Activity.cs" />
     <Compile Include="Models\FitnessProvider.cs" />
+    <Compile Include="Models\FitnessProviderPayload.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Team.cs" />
@@ -334,7 +335,6 @@
     <Content Include="Views\FitnessProviders\Details.cshtml" />
     <Content Include="Views\FitnessProviders\Edit.cshtml" />
     <Content Include="Views\FitnessProviders\Index.cshtml" />
-    <Content Include="Views\Home\Wizzard.cshtml" />
     <Content Include="Views\Account\AddFitnessProvider.cshtml" />
   </ItemGroup>
   <ItemGroup>

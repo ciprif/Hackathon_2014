@@ -2,9 +2,9 @@
 @{
     ViewBag.Title = "AddFitnessProvider";
 
-    string key = "f34nz6t9h3unxp4s46bs2jg8py7kvq3e";
-    string redirect_uri = "http://localhost:49429/account/addfitnessprovider";
-    string authorize_url = "https://www.mapmyfitness.com/v7.0/oauth2/authorize/?client_id={0}&response_type=code&redirect_uri={1}";
+    string key = System.Configuration.ConfigurationManager.AppSettings["mapMyFitnessKey"];
+    string redirect_uri = System.Configuration.ConfigurationManager.AppSettings["mapMyFitnessRedirectUri"];
+    string authorize_url = System.Configuration.ConfigurationManager.AppSettings["mapMyFitnessAuthorizeUri"];
     string mapMyFitnessUrl = string.Format(authorize_url, key, redirect_uri);
     
 }

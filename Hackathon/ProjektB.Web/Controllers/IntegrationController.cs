@@ -16,6 +16,8 @@ namespace ProjektB.Web.Controllers
         [ActionName("Activity")]
         public async Task<IHttpActionResult> GetActivityById(string id)
         {
+            //TODO: finish this method!
+
             Object result = new
             {
                 needsMovement = true
