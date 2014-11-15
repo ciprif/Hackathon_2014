@@ -8,11 +8,14 @@ namespace ProjektB.Web.ConfigSections
 {
     public class AuthSection : ConfigurationSection
     {
-        [ConfigurationProperty("application", IsRequired = true)]
-        public AuthApplication Application
+        [ConfigurationProperty("applications", IsRequired = true)]
+        [ConfigurationCollection(typeof(AuthApplicationCollection),
+        AddItemName = "add",
+        ClearItemsName = "clear",
+        RemoveItemName = "remove")]
+        public AuthApplicationCollection Applications
         {
-            get { return (AuthApplication)this["application"]; }
-            set { this["application"] = value; }
+            get { return (AuthApplicationCollection)this["applications"]; }
         }
     }
 
