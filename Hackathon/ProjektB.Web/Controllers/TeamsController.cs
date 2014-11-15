@@ -10,9 +10,10 @@ using ProjektB.Web.Models;
 
 namespace ProjektB.Web.Controllers
 {
-    public class TeamsController : Controller
+    public class TeamsController : BaseController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        public Repository Repository { get; set; }
 
         // GET: Teams
         public ActionResult Index()
@@ -70,6 +71,35 @@ namespace ProjektB.Web.Controllers
             {
                 return HttpNotFound();
             }
+            return View(team);
+        }
+
+        // GET: Teams/Join/5
+        public ActionResult Join(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Team team = Repository.Teams.Find(id);
+            if (team == null)
+            {
+                return HttpNotFound();
+            }
+
+           var userDetail =  Repository.UserDetails.FirstOrDefault(u => u.ApplicationUserId == UserId);
+            if (userDetail == null)
+            {
+                userDetail = new UserDetail()
+                {
+                    ApplicationUserId = UserId
+                };
+                Repository.UserDetails.Add(userDetail);
+            }
+            userDetail.TeamId = id.Value;
+
+            Repository.SaveChanges();
+
             return View(team);
         }
 

@@ -12,7 +12,7 @@ using ProjektB.Web.SyncModules;
 
 namespace ProjektB.Web.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         /// <summary>
         /// Logger
@@ -43,9 +43,8 @@ namespace ProjektB.Web.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                string userId = User.Identity.GetUserId();
-                ViewBag.HasProviders = Repository.FitnessProviders.Where(p => p.ApplicationUserId == userId).Count() > 0;
-                ViewBag.HasTeam = Repository.UserDetails.Where(u => u.ApplicationUserId == userId).Count() > 0;
+                ViewBag.HasProviders = Repository.FitnessProviders.Where(p => p.ApplicationUserId == UserId).Count() > 0;
+                ViewBag.HasTeam = Repository.UserDetails.Where(u => u.ApplicationUserId == UserId).Count() > 0;
             }
 
             SyncModule syncModule = new SyncModule();
@@ -100,6 +99,11 @@ namespace ProjektB.Web.Controllers
             Repository.ToDos.Add(new ToDo { Payload = model.ItemValue });
 
             return RedirectToAction("ToDoS");
+        }
+
+        public ActionResult LeaderBoard()
+        {
+            return View();
         }
     }
 }
