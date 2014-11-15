@@ -18,6 +18,7 @@ namespace ProjektB.Web.Models
             // Add custom user claims here
             return userIdentity;
         }
+
     }
 
     public class ToDo
@@ -40,6 +41,10 @@ namespace ProjektB.Web.Models
         }
 
         public DbSet<ToDo> ToDos { get; set; }
+
+        public DbSet<Team> Teams { get; set; }
+
+        public DbSet<UserDetail> UserDetails { get; set; }
     }
 
     public class Repository
@@ -73,6 +78,8 @@ namespace ProjektB.Web.Models
         }
 
         public IDbSet<ToDo> ToDos { get { return Context.ToDos; } }
+        public IDbSet<Team> Teams { get { return Context.Teams; } }
+        public IDbSet<UserDetail> UserDetails { get { return Context.UserDetails; } }
 
         public int SaveChanges()
         {
