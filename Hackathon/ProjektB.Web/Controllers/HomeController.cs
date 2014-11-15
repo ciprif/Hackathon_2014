@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using Castle.Core.Logging;
 using System.Threading.Tasks;
+using Microsoft.AspNet.Identity;
 
 namespace ProjektB.Web.Controllers
 {
@@ -39,6 +40,13 @@ namespace ProjektB.Web.Controllers
 
         public ActionResult Index()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                string userId = User.Identity.GetUserId();
+                ViewBag.HasProviders = Repository.FitnessProviders.Where(p => p.ApplicationUserId == userId).Count() > 0;
+                ViewBag.HasTeam = Repository.UserDetails.Where(u => u.ApplicationUserId == userId).Count() > 0;
+            }
+
             return View();
         }
 
