@@ -198,6 +198,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FitnessProviders\Interfaces\IUserDetails.cs" />
+    <Compile Include="FitnessProviders\Interfaces\IUserLocation.cs" />
+    <Compile Include="FitnessProviders\Interfaces\IUserStats.cs" />
+    <Compile Include="FitnessProviders\MapMyFitness\MapMyFitnessIntegration.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\ContainerBootstrapper.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -209,7 +213,9 @@
     <Compile Include="ConfigSections\AuthSection.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\IntegrationController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="FitnessProviders\MapMyFitness\Models\MapMyFitnessUser.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -218,6 +224,7 @@
     <Compile Include="Infrastructure\ControllersInstaller.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="FitnessProviders\FitnessProviderModels\Activity.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\ToDoSViewModels.cs" />
