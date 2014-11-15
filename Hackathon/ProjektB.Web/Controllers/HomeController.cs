@@ -103,7 +103,20 @@ namespace ProjektB.Web.Controllers
 
         public ActionResult LeaderBoard()
         {
-            return View();
+            var userActivities = (from activity in Repository.UserActivities
+                                 join user in Repository.Users on activity.ApplicationUserId equals user.Id
+                                 join detail in Repository.UserDetails on activity.ApplicationUserId equals detail.ApplicationUserId
+                                 join team in Repository.Teams on detail.TeamId equals team.Id
+                                 select new ActivityViewModel
+                                 {
+                                     UserName = user.UserName,
+                                     ActivityType = activity.ActivityType,
+                                     Score = activity.Score,
+                                     TeamId = detail.TeamId,
+                                     TeamName = team.Name
+                                 }).GroupBy(a => a.TeamName);
+
+            return View(userActivities);
         }
     }
 }
