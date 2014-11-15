@@ -38,14 +38,6 @@ namespace ProjektB.Web.Controllers
 
         public ActionResult Index()
         {
-            Logger.Debug("IndexPage.");
-            var todos = Repository.ToDos.ToList();
-            
-
-            Repository.ToDos.Add(new ToDo { Payload = "tralala" });
-
-            //throw new Exception();
-
             return View();
         }
 
