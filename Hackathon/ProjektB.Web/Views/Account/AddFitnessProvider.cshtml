@@ -11,4 +11,12 @@
 
 <h2>AddFitnessProvider</h2>
 
-<a href="@Html.Raw(mapMyFitnessUrl)">Click here!</a>
+@if (ViewBag.addedWithSuccess)
+{
+    <p class="text-success">Added with success! Would you like to add another one?</p>
+}
+<div>
+    <div>
+        <a href="@Html.Raw(mapMyFitnessUrl)"><img src="https://d21oh8fj97neu1.cloudfront.net/pfq4cm3i/original/mmf_connect_med.png" /></a>
+    </div>
+</div>

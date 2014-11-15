@@ -452,14 +452,23 @@ namespace ProjektB.Web.Controllers
         }
 
         //[AllowAnonymous]
-        public async Task<ActionResult> AddFitnessProvider(string code)
+        public async Task<ActionResult> AddFitnessProvider()
+        {
+            ViewBag.addedWithSuccess = false;
+            ViewBag.offerAddAnother = false;
+
+            return View();
+        }
+
+        /// <summary>
+        /// Action for Map My Fitness callback
+        /// </summary>
+        public async Task<ActionResult> AddFitnessProviderMMF(string code)
         {
             string clientId = ConfigurationManager.AppSettings["mapMyFitnessKey"];
             string clientSecret = ConfigurationManager.AppSettings["mapMyFitnessSecret"];
 
-            if (code != null)
-            {
-                var content = new FormUrlEncodedContent(new[] 
+            var content = new FormUrlEncodedContent(new[] 
                 {
                     new KeyValuePair<string, string>("grant_type", "authorization_code"),
                     new KeyValuePair<string, string>("client_id", clientId),
@@ -468,21 +477,23 @@ namespace ProjektB.Web.Controllers
                 });
 
 
-                HttpClient client = new HttpClient(new LoggingHandler(new HttpClientHandler()));
-                client.DefaultRequestHeaders.Add("Api-Key", clientId);
-                HttpResponseMessage apiResult = await client.PostAsync("https://api.mapmyfitness.com/v7.0/oauth2/access_token/", content);
-                string r = await apiResult.Content.ReadAsStringAsync();
-                string accessToken = JObject.Parse(r).Value<string>("access_token");
+            HttpClient client = new HttpClient(new LoggingHandler(new HttpClientHandler()));
+            client.DefaultRequestHeaders.Add("Api-Key", clientId);
+            HttpResponseMessage apiResult = await client.PostAsync("https://api.mapmyfitness.com/v7.0/oauth2/access_token/", content);
+            string r = await apiResult.Content.ReadAsStringAsync();
+            string accessToken = JObject.Parse(r).Value<string>("access_token");
 
-                BindUserAccessToken(accessToken);
-            }
+            BindUserAccessToken(accessToken, ProviderType.MapMyFitness);
 
-            return View();
+            // DO. NOT. DO. THIS. AT. HOME!
+            ViewBag.addedWithSuccess = true;
+            ViewBag.offerAddAnother = true;
+            return View("AddFitnessProvider");
         }
 
         #region Helpers
 
-        private void BindUserAccessToken(string accessToken)
+        private void BindUserAccessToken(string accessToken, ProviderType providerType)
         {
             FitnessProviderPayload providerPayload = new FitnessProviderPayload
             {
@@ -495,13 +506,13 @@ namespace ProjektB.Web.Controllers
 
             //we'll do an add or update here
             FitnessProvider provider = Repository.FitnessProviders
-                .FirstOrDefault(x=>x.ApplicationUserId == userId && x.Type == ProviderType.MapMyFitness);
+                .FirstOrDefault(x=>x.ApplicationUserId == userId && x.Type == providerType);
             if (provider == null)
             {
                 provider = new FitnessProvider
                 {
                     ApplicationUserId = userId,
-                    Type = ProviderType.MapMyFitness,
+                    Type = providerType,
                     ConnectionDetails = payload
                 };
                 Repository.FitnessProviders.Add(provider);
