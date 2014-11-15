@@ -16,6 +16,7 @@ using System.Diagnostics;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
+using System.Configuration;
 
 namespace ProjektB.Web.Controllers
 {
@@ -450,11 +451,11 @@ namespace ProjektB.Web.Controllers
             return View();
         }
 
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public async Task<ActionResult> AddFitnessProvider(string code)
         {
-            string clientId = "f34nz6t9h3unxp4s46bs2jg8py7kvq3e";
-            string clientSecret = "RKCKsHTWjVfxcDcXxWdD6gdsgJHvrXUBubsf5eJZ6Pm";
+            string clientId = ConfigurationManager.AppSettings["mapMyFitnessKey"];
+            string clientSecret = ConfigurationManager.AppSettings["mapMyFitnessSecret"];
 
             if (code != null)
             {
@@ -483,8 +484,34 @@ namespace ProjektB.Web.Controllers
 
         private void BindUserAccessToken(string accessToken)
         {
+            FitnessProviderPayload providerPayload = new FitnessProviderPayload
+            {
+                key = accessToken
+            };
+
+            string payload = JsonConvert.SerializeObject(providerPayload);
+
             string userId = User.Identity.GetUserId();
+
+            //we'll do an add or update here
+            FitnessProvider provider = Repository.FitnessProviders
+                .FirstOrDefault(x=>x.ApplicationUserId == userId && x.Type == ProviderType.MapMyFitness);
+            if (provider == null)
+            {
+                provider = new FitnessProvider
+                {
+                    ApplicationUserId = userId,
+                    Type = ProviderType.MapMyFitness,
+                    ConnectionDetails = payload
+                };
+                Repository.FitnessProviders.Add(provider);
+            }
+            else
+            {
+                provider.ConnectionDetails = payload;
+            }
             
+            Repository.SaveChanges();
         }
 
         // Used for XSRF protection when adding external logins

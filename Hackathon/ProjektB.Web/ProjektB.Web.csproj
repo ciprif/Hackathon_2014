@@ -15,7 +15,7 @@
     <AssemblyName>ProjektB.Web</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -233,6 +233,7 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="FitnessProviders\FitnessProviderModels\Activity.cs" />
     <Compile Include="Models\FitnessProvider.cs" />
+    <Compile Include="Models\FitnessProviderPayload.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Team.cs" />
@@ -360,7 +361,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>49428</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:49429/</IISUrl>
+          <IISUrl>http://localhost/ProjektB.Web</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
