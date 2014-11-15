@@ -8,148 +8,28 @@ namespace ProjektB.Web.FitnessProviders.MapMyFitness.Models
 {
     public class MapMyFitnessUser : IUserDetails
     {
-        public int UserId
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public int UserId { get; set; }
 
-        public string FirstName
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public string FirstName { get; set; }
 
-        public string LastName
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public string LastName { get; set; }
 
-        public string DisplayName
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public string DisplayName { get; set; }
 
-        public string UserName
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public string UserName { get; set; }
 
-        public string Email
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public string Email { get; set; }
 
-        public TimeZone TimeZone
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public DateTime Birthday { get; set; }
 
-        public DateTime Birthday
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public Gender Gender { get; set; }
 
-        public Gender Gender
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public List<Web.Models.FitnessProviderModels.IActivity> Activities { get; set; }
 
-        public List<Web.Models.FitnessProviderModels.Activity> Activities
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public string ImagePath { get; set; }
 
-        public string ImagePath
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public IUserStats UserStats { get; set; }
 
-        public IUserStats UserStats
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public IUserLocation Location { get; set; }
     }
 }

@@ -219,7 +219,10 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="Controllers\TeamsController.cs" />
+    <Compile Include="FitnessProviders\MapMyFitness\Models\MapMyFitnessActivity.cs" />
+    <Compile Include="FitnessProviders\MapMyFitness\Models\MapMyFitnessLocation.cs" />
     <Compile Include="FitnessProviders\MapMyFitness\Models\MapMyFitnessUser.cs" />
+    <Compile Include="FitnessProviders\MapMyFitness\Models\MyFitnessUserStats.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -237,6 +240,7 @@
     <Compile Include="Plumbing\WindsorControllerFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="SyncModule\SyncModule.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -328,6 +332,7 @@
     <Content Include="Views\FitnessProviders\Details.cshtml" />
     <Content Include="Views\FitnessProviders\Edit.cshtml" />
     <Content Include="Views\FitnessProviders\Index.cshtml" />
+    <Content Include="Views\Home\Wizzard.cshtml" />
     <Content Include="Views\Account\AddFitnessProvider.cshtml" />
   </ItemGroup>
   <ItemGroup>

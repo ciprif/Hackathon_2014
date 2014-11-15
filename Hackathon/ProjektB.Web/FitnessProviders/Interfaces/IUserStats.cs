@@ -8,5 +8,7 @@ namespace ProjektB.Web.FitnessProviders.Interfaces
 {
     public interface IUserStats
     {
+        double Height { get; set; }
+        double Weight { get; set; }
     }
 }
