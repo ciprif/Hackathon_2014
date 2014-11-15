@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using ProjektB.Web.Models.FitnessProviderModels;
+using System.Threading.Tasks;
 
 namespace ProjektB.Web.Controllers
 {
@@ -14,6 +15,17 @@ namespace ProjektB.Web.Controllers
         public string GetActivityById(int id)
         {
             return "value";
+        }
+
+        [HttpGet]
+        public async Task<IHttpActionResult> Status(string userIdHash)
+        {
+            Object result = new
+            {
+                needsMovement = true
+            };
+
+            return Json(result);
         }
     }
 }
