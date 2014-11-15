@@ -65,8 +65,8 @@ namespace ProjektB.Web.FitnessProviders
 
                         UserInformation.UserStats = new MyFitnessUserStats
                         {
-                            Height = (double)Content["height"],
-                            Weight = (double)Content["weight"]
+                            Height = (double)((string)Content["height"] == null ? 0 : Content["height"]),
+                            Weight = (double)((string)Content["weight"] == null ? 0 : Content["weight"])
                         };
                     }
                 }
