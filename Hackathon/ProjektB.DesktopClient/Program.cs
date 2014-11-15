@@ -21,6 +21,8 @@ namespace ProjektB.DesktopClient
             // Show the system tray icon.					
 			using (ProcessIcon pi = new ProcessIcon())
 			{
+                ActivityMonitor monitor = new ActivityMonitor();
+
 				pi.Display();
 
 				// Make sure the application runs!

@@ -16,7 +16,10 @@
     <p class="text-success">Added with success! Would you like to add another one?</p>
 }
 <div>
-    <div>
+    <p>
         <a href="@Html.Raw(mapMyFitnessUrl)"><img src="https://d21oh8fj97neu1.cloudfront.net/pfq4cm3i/original/mmf_connect_med.png" /></a>
-    </div>
+    </p>
+    <p>
+        @Html.ActionLink("Join a Team »", "Index", "Teams", null, new { @class = "btn btn-primary" })
+    </p>
 </div>
