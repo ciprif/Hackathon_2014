@@ -45,6 +45,9 @@ namespace ProjektB.Web.Models
         public DbSet<Team> Teams { get; set; }
 
         public DbSet<UserDetail> UserDetails { get; set; }
+
+        public DbSet<FitnessProvider> FitnessProviders { get; set; }
+
     }
 
     public class Repository
@@ -57,14 +60,14 @@ namespace ProjektB.Web.Models
         /// </summary>
         private ApplicationDbContext _context;
 
-        public UnitOfWork UoW {get; set;}
+        public UnitOfWork UoW { get; set; }
 
         protected ApplicationDbContext Context
         {
             get
             {
                 ApplicationDbContext context = UoW.Get<ApplicationDbContext>(DBContextKey);
-                
+
                 if (context == null)
                 {
                     context = new ApplicationDbContext();
