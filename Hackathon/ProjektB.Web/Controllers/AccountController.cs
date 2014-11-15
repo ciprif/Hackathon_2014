@@ -10,6 +10,12 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using ProjektB.Web.Models;
 using Castle.Core.Logging;
+using System.Net.Http;
+using System.Threading;
+using System.Diagnostics;
+using Newtonsoft.Json;
+using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
 
 namespace ProjektB.Web.Controllers
 {
@@ -27,10 +33,15 @@ namespace ProjektB.Web.Controllers
             set { logger = value; }
         }
 
+        private Lazy<Repository> lazyRepository;
+
+        protected Repository Repository { get { return lazyRepository.Value; } }
+
         private ApplicationUserManager _userManager;
 
-        public AccountController()
+        public AccountController(Lazy<Repository> lazyRepository)
         {
+            this.lazyRepository = lazyRepository;
         }
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
@@ -85,7 +96,7 @@ namespace ProjektB.Web.Controllers
             {
                 return View(model);
             }
-
+            
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
             var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
@@ -439,7 +450,43 @@ namespace ProjektB.Web.Controllers
             return View();
         }
 
+        [AllowAnonymous]
+        public async Task<ActionResult> AddFitnessProvider(string code)
+        {
+            string clientId = "f34nz6t9h3unxp4s46bs2jg8py7kvq3e";
+            string clientSecret = "RKCKsHTWjVfxcDcXxWdD6gdsgJHvrXUBubsf5eJZ6Pm";
+
+            if (code != null)
+            {
+                var content = new FormUrlEncodedContent(new[] 
+                {
+                    new KeyValuePair<string, string>("grant_type", "authorization_code"),
+                    new KeyValuePair<string, string>("client_id", clientId),
+                    new KeyValuePair<string, string>("client_secret", clientSecret),
+                    new KeyValuePair<string, string>("code", code)
+                });
+
+
+                HttpClient client = new HttpClient(new LoggingHandler(new HttpClientHandler()));
+                client.DefaultRequestHeaders.Add("Api-Key", clientId);
+                HttpResponseMessage apiResult = await client.PostAsync("https://api.mapmyfitness.com/v7.0/oauth2/access_token/", content);
+                string r = await apiResult.Content.ReadAsStringAsync();
+                string accessToken = JObject.Parse(r).Value<string>("access_token");
+
+                BindUserAccessToken(accessToken);
+            }
+
+            return View();
+        }
+
         #region Helpers
+
+        private void BindUserAccessToken(string accessToken)
+        {
+            string userId = User.Identity.GetUserId();
+            
+        }
+
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
 
@@ -497,5 +544,36 @@ namespace ProjektB.Web.Controllers
             }
         }
         #endregion
+    }
+
+    public class LoggingHandler : DelegatingHandler
+    {
+        public LoggingHandler(HttpMessageHandler innerHandler)
+            : base(innerHandler)
+        {
+        }
+
+        protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        {
+            Debug.WriteLine("Request:");
+            Debug.WriteLine(request.ToString());
+            if (request.Content != null)
+            {
+                Debug.WriteLine(await request.Content.ReadAsStringAsync());
+            }
+
+
+            HttpResponseMessage response = await base.SendAsync(request, cancellationToken);
+
+            Debug.WriteLine("Response:");
+            Debug.WriteLine(response.ToString());
+            if (response.Content != null)
+            {
+                Debug.WriteLine(await response.Content.ReadAsStringAsync());
+            }
+
+
+            return response;
+        }
     }
 }
