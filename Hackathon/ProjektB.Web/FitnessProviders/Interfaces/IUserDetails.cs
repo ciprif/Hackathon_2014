@@ -19,7 +19,7 @@ namespace ProjektB.Web.FitnessProviders.Interfaces
         string Email { get; set; }
         DateTime Birthday { get; set; }
         Gender Gender { get; set; }
-        List<IActivity> Activities { get; set; }
+        List<Activity> Activities { get; set; }
         string ImagePath { get; set; }
         IUserStats UserStats { get; set; }
         IUserLocation Location { get; set; }

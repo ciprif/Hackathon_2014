@@ -21,15 +21,15 @@ namespace ProjektB.Web.Models.FitnessProviderModels
         public double Value { get; set; }
     }
 
-    public interface IActivity
+    public class Activity
     {
-        int ID { get; set; }
-        string Name { get; set; }
-        string Description { get; set; }
-        int Duration { get; set; }
-        DateTimeOffset Timestamp { get; set; }
-        List<ActivityValue> Values { get; set; }
-        ProviderType Provider { get; set; }
-        ActivityType ActivityType { get; set; }
+        public int ID { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public int Duration { get; set; }
+        public DateTimeOffset Timestamp { get; set; }
+        public List<ActivityValue> Values { get; set; }
+        public ProviderType Provider { get; set; }
+        public ActivityType ActivityType { get; set; }
     }
 }

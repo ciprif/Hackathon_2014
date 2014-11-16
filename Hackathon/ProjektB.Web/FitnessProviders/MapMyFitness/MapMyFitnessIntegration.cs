@@ -80,9 +80,9 @@ namespace ProjektB.Web.FitnessProviders
             return UserInformation;
         }
 
-        public async Task<List<IActivity>> GetWorkoutByUserId(string apiKey, string authorization, int userId, DateTimeOffset? startedAfter = null, DateTimeOffset? startedBefore = null, string activityType = null)
+        public async Task<List<Activity>> GetWorkoutByUserId(string apiKey, string authorization, int userId, DateTimeOffset? startedAfter = null, DateTimeOffset? startedBefore = null, string activityType = null)
         {
-            List<IActivity> activities = new List<IActivity>();
+            List<Activity> activities = new List<Activity>();
             try
             {
                 using (var client = new HttpClient())
