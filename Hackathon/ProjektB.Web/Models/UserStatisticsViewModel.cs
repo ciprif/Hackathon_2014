@@ -12,7 +12,7 @@ namespace ProjektB.Web.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
-        public List<IActivity> UserActivities { get; set; }
+        public List<Activity> UserActivities { get; set; }
         public double Score { get; set; }
         public int Team{ get; set; }
         public string TeamName { get; set; }
