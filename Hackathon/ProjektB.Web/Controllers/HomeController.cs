@@ -49,6 +49,11 @@ namespace ProjektB.Web.Controllers
             {
                 ViewBag.HasProviders = Repository.FitnessProviders.Where(p => p.ApplicationUserId == UserId).Count() > 0;
                 ViewBag.HasTeam = Repository.UserDetails.Where(u => u.ApplicationUserId == UserId).Count() > 0;
+
+                if (ViewBag.HasProviders && ViewBag.HasTeam)
+                {
+                    return View("LeaderBoard", GetUserActivities());
+                }
             }
 
             return View();
@@ -104,28 +109,30 @@ namespace ProjektB.Web.Controllers
 
         public ActionResult LeaderBoard()
         {
+            var userActivities = GetUserActivities();
+
+            return View(userActivities);
+        }
+
+        private IEnumerable<IGrouping<string, ActivityViewModel>> GetUserActivities()
+        {
             var userActivities = (from activity in Repository.UserActivities
-                                 join user in Repository.Users on activity.ApplicationUserId equals user.Id
-                                 join detail in Repository.UserDetails on activity.ApplicationUserId equals detail.ApplicationUserId
-                                 join team in Repository.Teams on detail.TeamId equals team.Id
-                                 select new ActivityViewModel
-                                 {
-                                     UserName = user.UserName,
-                                     ActivityType = activity.ActivityType,
-                                     Score = activity.Score,
-                                     TeamId = detail.TeamId,
+                                  join user in Repository.Users on activity.ApplicationUserId equals user.Id
+                                  join detail in Repository.UserDetails on activity.ApplicationUserId equals detail.ApplicationUserId
+                                  join team in Repository.Teams on detail.TeamId equals team.Id
+                                  select new ActivityViewModel
+                                  {
+                                      UserName = user.UserName,
+                                      ActivityType = activity.ActivityType,
+                                      Score = activity.Score,
+                                      TeamId = detail.TeamId,
                                       TeamName = team.Name,
                                       TimeStamp = activity.Timestamp,
                                       UserLogin = user.Logins.FirstOrDefault()
                                   }).GroupBy(a => a.TeamName).ToList().OrderByDescending(g => g.GetScore());
 
 
-            var leaderBoard = new LeaderBoardViewModel
-            {
-                TeamActivities = userActivities
-            };
-
-            return View(userActivities);
+            return userActivities;
         }
 
         public async Task<ActionResult> UserStatistics()

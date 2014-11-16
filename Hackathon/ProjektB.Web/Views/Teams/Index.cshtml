@@ -23,7 +23,10 @@
             @Html.DisplayFor(modelItem => item.Name)
         </td>
         <td>
-            @Html.ActionLink("Join", "Join", new { id=item.Id })
+            @if (ViewBag.TeamId == null || ViewBag.TeamId != item.Id)
+            {
+                @Html.ActionLink("Join", "Join", new { id = item.Id })
+            }
         </td>
     </tr>
 }

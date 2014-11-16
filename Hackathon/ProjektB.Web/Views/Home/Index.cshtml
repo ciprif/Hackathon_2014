@@ -12,12 +12,16 @@
     }
     else
     {
-        <p><a href="Account/Login" class="btn btn-primary btn-lg">Log in &raquo;</a></p>
+        <p>
+            @Html.ActionLink("Log In »", "Login", "Account", null, new { @class = "btn btn-primary btn-lg" })
+        </p>
     }
 
     @if (ViewBag.HasProviders != null && !ViewBag.HasProviders)
     {
-        <p><a href="Account/AddFitnessProvider" class="btn btn-primary btn-lg">Add Providers &raquo;</a></p>
+        <p>
+            @Html.ActionLink("Add Providers »", "AddFitnessProvider", "Account", null, new { @class = "btn btn-primary btn-lg" })
+        </p>
     }
     else
     {
