@@ -24,7 +24,7 @@ namespace ProjektB.Web.FitnessProviders.MapMyFitness.Models
 
         public Gender Gender { get; set; }
 
-        public List<Web.Models.FitnessProviderModels.IActivity> Activities { get; set; }
+        public List<Web.Models.FitnessProviderModels.Activity> Activities { get; set; }
 
         public string ImagePath { get; set; }
 

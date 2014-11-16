@@ -17,6 +17,7 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using System.Configuration;
+using Fitbit.Models;
 
 namespace ProjektB.Web.Controllers
 {
@@ -460,6 +461,67 @@ namespace ProjektB.Web.Controllers
             return View();
         }
 
+        public ActionResult RedirectToFitbit()
+        {
+            //make sure you've set these up in Web.Config under <appSettings>:
+            string ConsumerKey = ConfigurationManager.AppSettings["fitbitConsumerKey"];
+            string ConsumerSecret = ConfigurationManager.AppSettings["fitbitConsumerSecret"];
+
+
+            Fitbit.Api.Authenticator authenticator = new Fitbit.Api.Authenticator(ConsumerKey,
+                ConsumerSecret,
+                "http://api.fitbit.com/oauth/request_token",
+                "http://api.fitbit.com/oauth/access_token",
+                "http://api.fitbit.com/oauth/authorize");
+            RequestToken token = authenticator.GetRequestToken();
+            Session.Add("FitbitRequestTokenSecret", token.Secret.ToString()); //store this somehow, like in Session as we'll need it after the Callback() action
+
+            //note: at this point the RequestToken object only has the Token and Secret properties supplied. Verifier happens later.
+
+            string authUrl = authenticator.GenerateAuthUrlFromRequestToken(token, true);
+
+
+            return Redirect(authUrl);
+        }
+
+        public ActionResult AddFitnessProviderFB()
+        {
+            RequestToken token = new RequestToken();
+            token.Token = Request.Params["oauth_token"];
+            token.Secret = Session["FitbitRequestTokenSecret"].ToString();
+            token.Verifier = Request.Params["oauth_verifier"];
+
+            string ConsumerKey = ConfigurationManager.AppSettings["FitbitConsumerKey"];
+            string ConsumerSecret = ConfigurationManager.AppSettings["FitbitConsumerSecret"];
+
+            //this is going to go back to Fitbit one last time (server to server) and get the user's permanent auth credentials
+
+            //create the Authenticator object
+            Fitbit.Api.Authenticator authenticator = new Fitbit.Api.Authenticator(ConsumerKey,
+                ConsumerSecret,
+                "http://api.fitbit.com/oauth/request_token",
+                "http://api.fitbit.com/oauth/access_token",
+                "http://api.fitbit.com/oauth/authorize");
+
+
+            //execute the Authenticator request to Fitbit
+            AuthCredential credential = authenticator.ProcessApprovedAuthCallback(token);
+
+            FitnessProviderFBPayload fbToken = new FitnessProviderFBPayload
+            {
+                AuthToken = credential.AuthToken,
+                AuthTokenSecret = credential.AuthTokenSecret,
+                UserId = credential.UserId
+            };
+
+            BindUserAccessToken(fbToken, ProviderType.FitBit);
+
+            // DO. NOT. DO. THIS. AT. HOME!
+            ViewBag.addedWithSuccess = true;
+            ViewBag.offerAddAnother = true;
+            return View("AddFitnessProvider");
+        }
+
         /// <summary>
         /// Action for Map My Fitness callback
         /// </summary>
@@ -483,7 +545,12 @@ namespace ProjektB.Web.Controllers
             string r = await apiResult.Content.ReadAsStringAsync();
             string accessToken = JObject.Parse(r).Value<string>("access_token");
 
-            BindUserAccessToken(accessToken, ProviderType.MapMyFitness);
+            FitnessProviderPayload providerPayload = new FitnessProviderPayload
+            {
+                key = accessToken
+            };
+
+            BindUserAccessToken(providerPayload, ProviderType.MapMyFitness);
 
             // DO. NOT. DO. THIS. AT. HOME!
             ViewBag.addedWithSuccess = true;
@@ -493,14 +560,11 @@ namespace ProjektB.Web.Controllers
 
         #region Helpers
 
-        private void BindUserAccessToken(string accessToken, ProviderType providerType)
+        private void BindUserAccessToken(object accessToken, ProviderType providerType)
         {
-            FitnessProviderPayload providerPayload = new FitnessProviderPayload
-            {
-                key = accessToken
-            };
 
-            string payload = JsonConvert.SerializeObject(providerPayload);
+
+            string payload = JsonConvert.SerializeObject(accessToken);
 
             string userId = User.Identity.GetUserId();
 

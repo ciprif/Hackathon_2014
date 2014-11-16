@@ -2,10 +2,13 @@
 @{
     ViewBag.Title = "AddFitnessProvider";
 
+    // Fitbit
     string key = System.Configuration.ConfigurationManager.AppSettings["mapMyFitnessKey"];
     string redirect_uri = System.Configuration.ConfigurationManager.AppSettings["mapMyFitnessRedirectUri"];
     string authorize_url = System.Configuration.ConfigurationManager.AppSettings["mapMyFitnessAuthorizeUri"];
     string mapMyFitnessUrl = string.Format(authorize_url, key, redirect_uri);
+    
+    // Fitbit
     
 }
 
@@ -18,6 +21,9 @@
 <div>
     <p>
         <a href="@Html.Raw(mapMyFitnessUrl)"><img src="https://d21oh8fj97neu1.cloudfront.net/pfq4cm3i/original/mmf_connect_med.png" /></a>
+    </p>
+    <p>
+        @Html.ActionLink("Add FitBit", "RedirectToFitbit")
     </p>
     <p>
         @Html.ActionLink("Join a Team »", "Index", "Teams", null, new { @class = "btn btn-primary" })
