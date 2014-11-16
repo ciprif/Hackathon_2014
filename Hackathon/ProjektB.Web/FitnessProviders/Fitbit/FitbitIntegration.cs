@@ -64,7 +64,7 @@ namespace ProjektB.Web.FitnessProviders.Fitbit
                 fitbitAuthTokenSecret);
 
             global::Fitbit.Models.UserProfile profile = client.GetUserProfile();
-            var nameSplit = profile.FullName.Split(' ')
+            var nameSplit = profile.FullName.Split(' ');
             return new UserDetails
             {
                 UserId = profile.EncodedId,

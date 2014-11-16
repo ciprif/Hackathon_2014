@@ -14,7 +14,7 @@
 
 <h2>AddFitnessProvider</h2>
 
-@if (ViewBag.addedWithSuccess)
+@if (ViewBag.addedWithSuccess != null && ViewBag.addedWithSuccess)
 {
     <p class="text-success">Added with success! Would you like to add another one?</p>
 }
@@ -23,9 +23,16 @@
         <a href="@Html.Raw(mapMyFitnessUrl)"><img src="https://d21oh8fj97neu1.cloudfront.net/pfq4cm3i/original/mmf_connect_med.png" /></a>
     </p>
     <p>
-        @Html.ActionLink("Add FitBit", "RedirectToFitbit", null, new { @class = "btn btn-primary" })
+        <a href="@Url.Action("Connect with FitBit", "RedirectToFitbit")"><img src="@Url.Content("~/Content/fitbit_logo.png")" height="42" /></a>
     </p>
     <p>
-        @Html.ActionLink("Join a Team »", "Index", "Teams", null, new { @class = "btn btn-primary" })
+        @if (ViewBag.HasTeam)
+        {
+            @Html.ActionLink("Done!", "Index", "Home", null, new { @class = "btn btn-primary" })
+        }
+        else
+        {
+            @Html.ActionLink("Join a Team »", "Index", "Teams", null, new { @class = "btn btn-primary" })
+        }
     </p>
 </div>

@@ -455,6 +455,9 @@ namespace ProjektB.Web.Controllers
         //[AllowAnonymous]
         public async Task<ActionResult> AddFitnessProvider()
         {
+            string userId = User.Identity.GetUserId();
+            ViewBag.HasTeam = Repository.UserDetails.Where(u => u.ApplicationUserId == userId).Count() > 0;
+
             ViewBag.addedWithSuccess = false;
             ViewBag.offerAddAnother = false;
 
