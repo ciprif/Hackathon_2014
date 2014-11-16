@@ -1,4 +1,4 @@
-﻿@model List<IGrouping<string, ProjektB.Web.Models.ActivityViewModel>>
+﻿@model IEnumerable<IGrouping<string, ProjektB.Web.Models.ActivityViewModel>>
 
 @{
     ViewBag.Title = "Leader Board";
@@ -13,11 +13,15 @@
         i++;
         <div class="panel panel-default">
             <div class="panel-heading" role="tab" id="heading_@i">
-                <h4 class="panel-title">
+                <div class="panel-title">
                     <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse_@i" aria-expanded="false" aria-controls="collapse_@i">
-                        @i -  @group.Key @(group.Sum(a => a.Score) / group.GroupBy(g => g.UserName).Count())
+                        <div style="width:36; display:inline">
+                            <div class="numberCircle">@i</div>
+                        </div>
+                         <span>@group.Key &#8594; @(group.GetScore().ToString("N2"))</span>
                     </a>
-                </h4>
+                   
+                </div>
             </div>
             <div id="collapse_@i" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading_@i">
                 <div class="panel-body">
