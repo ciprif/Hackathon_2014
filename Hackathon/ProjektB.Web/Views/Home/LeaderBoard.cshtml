@@ -1,4 +1,4 @@
-﻿@model IGrouping<string, ProjektB.Web.Models.ActivityViewModel>
+﻿@model List<IGrouping<string, ProjektB.Web.Models.ActivityViewModel>>
 
 @{
     ViewBag.Title = "Leader Board";
@@ -14,14 +14,40 @@
         <div class="panel panel-default">
             <div class="panel-heading" role="tab" id="heading_@i">
                 <h4 class="panel-title">
-                    <a  class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse_@i" aria-expanded="false" aria-controls="collapse_@i">
-                        @group.Key
+                    <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse_@i" aria-expanded="false" aria-controls="collapse_@i">
+                        @i -  @group.Key @(group.Sum(a => a.Score) / group.GroupBy(g => g.UserName).Count())
                     </a>
                 </h4>
             </div>
             <div id="collapse_@i" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading_@i">
                 <div class="panel-body">
-                    @*@item.Name - description*@
+                    <table class="table table-striped">
+                        <tr>
+                            <th></th>
+                            <th>User</th>
+                            <th>Activity</th>
+                            <th>Score</th>
+                        </tr>
+                        @foreach (var activity in group.OrderByDescending(g => g.TimeStamp))
+                        {
+                            <tr>
+                                <td>
+                                    <div class="circular">
+                                        <img src="@activity.UserImage" />
+                                    </div>
+                                </td>
+                                <td>
+                                    @activity.UserName
+                                </td>
+                                <td>
+                                    @activity.ActivityType
+                                </td>
+                                <td>
+                                    @activity.Score.ToString("N2")
+                                </td>
+                            </tr>
+                        }
+                    </table>
                 </div>
             </div>
         </div>

@@ -12,6 +12,7 @@ using ProjektB.Web.SyncModules;
 using ProjektB.Web.Models.FitnessProviderModels;
 using ProjektB.Web.FitnessProviders.MapMyFitness.Models;
 using ProjektB.Web.FitnessProviders.Interfaces;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace ProjektB.Web.Controllers
 {
@@ -113,8 +114,11 @@ namespace ProjektB.Web.Controllers
                                      ActivityType = activity.ActivityType,
                                      Score = activity.Score,
                                      TeamId = detail.TeamId,
-                                     TeamName = team.Name
-                                 }).GroupBy(a => a.TeamName);
+                                      TeamName = team.Name,
+                                      TimeStamp = activity.Timestamp,
+                                      UserLogin = user.Logins.FirstOrDefault()
+                                  }).GroupBy(a => a.TeamName).ToList();
+
 
             return View(userActivities);
         }
