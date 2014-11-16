@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<IGrouping<string, ProjektB.Web.Models.ActivityViewModel>>
 
 @{
-    ViewBag.Title = "Leader Board";
+    ViewBag.Title = "Leaderboard";
 }
 
-<h2>Leader Board</h2>
+<h2>Leaderboard</h2>
 
 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
     @{ var i = 0;}
@@ -15,12 +15,10 @@
             <div class="panel-heading" role="tab" id="heading_@i">
                 <div class="panel-title">
                     <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse_@i" aria-expanded="false" aria-controls="collapse_@i">
-                        <div style="width:36; display:inline">
-                            <div class="numberCircle">@i</div>
-                        </div>
-                         <span>@group.Key &#8594; @(group.GetScore().ToString("N2"))</span>
+                        <div class="numberCircle">@i</div>
+                        <span style="font-size:larger">@group.Key &#8594; @(group.GetScore().ToString("N2"))</span>
                     </a>
-                   
+
                 </div>
             </div>
             <div id="collapse_@i" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading_@i">
