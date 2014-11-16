@@ -247,6 +247,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\LeaderBoardViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\ModelExtensions.cs" />
     <Compile Include="Models\Team.cs" />
     <Compile Include="Models\ToDoSViewModels.cs" />
     <Compile Include="Models\UserActivity.cs" />
