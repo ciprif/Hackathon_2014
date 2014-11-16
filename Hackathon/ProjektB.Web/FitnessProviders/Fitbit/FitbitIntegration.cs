@@ -1,4 +1,5 @@
 ﻿using Fitbit.Api;
+using ProjektB.Web.FitnessProviders.Interfaces;
 using ProjektB.Web.Models.FitnessProviderModels;
 using System;
 using System.Collections.Generic;
@@ -50,6 +51,27 @@ namespace ProjektB.Web.FitnessProviders.Fitbit
                     }
                 },
                 Timestamp = DateTimeOffset.Now
+            };
+        }
+
+        public UserDetails GetAuthenticatedUser(string fitbitConsumerKey,
+            string fitbitConsumerSecret, string fitbitAuthToken, 
+            string fitbitAuthTokenSecret)
+        {
+            FitbitClient client = new FitbitClient(fitbitConsumerKey,
+                fitbitConsumerSecret,
+                fitbitAuthToken,
+                fitbitAuthTokenSecret);
+
+            global::Fitbit.Models.UserProfile profile = client.GetUserProfile();
+
+            return new UserDetails
+            {
+                UserId = profile.EncodedId,
+                Birthday = profile.DateOfBirth,
+                DisplayName = profile.DisplayName,
+                Gender = profile.Gender == global::Fitbit.Models.Gender.FEMALE ? Interfaces.Gender.Female : Gender.Male,
+                ImagePath = profile.Avatar
             };
         }
     }

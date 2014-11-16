@@ -27,7 +27,7 @@ namespace ProjektB.Web.FitnessProviders
             set { logger = value; }
         }
 
-        public async Task<IUserDetails> GetAuthenticatedUser(string apiKey, string authorization)
+        public async Task<UserDetails> GetAuthenticatedUser(string apiKey, string authorization)
         {
             MapMyFitnessUser UserInformation = new MapMyFitnessUser();
 
@@ -56,7 +56,7 @@ namespace ProjektB.Web.FitnessProviders
                         UserInformation.Email = (string)Content["email"];
                         UserInformation.Gender = (string)Content["gender"] == "M" ? Gender.Male : Gender.Female;
                         UserInformation.ImagePath = (string)Content["_links"]["image"][0]["href"];
-                        UserInformation.UserId = (int)Content["id"];
+                        UserInformation.UserId = (string)Content["id"];
                         
                         UserInformation.Location = new MapMyFitnessLocation
                         {
@@ -80,7 +80,7 @@ namespace ProjektB.Web.FitnessProviders
             return UserInformation;
         }
 
-        public async Task<List<Activity>> GetWorkoutByUserId(string apiKey, string authorization, int userId, DateTimeOffset? startedAfter = null, DateTimeOffset? startedBefore = null, string activityType = null)
+        public async Task<List<Activity>> GetWorkoutByUserId(string apiKey, string authorization, string userId, DateTimeOffset? startedAfter = null, DateTimeOffset? startedBefore = null, string activityType = null)
         {
             List<Activity> activities = new List<Activity>();
             try
@@ -112,7 +112,7 @@ namespace ProjektB.Web.FitnessProviders
                         requestUri += "started_before=" + startedBefore.ToString() + "&";
                     }
 
-                    requestUri += "user=" + userId.ToString();
+                    requestUri += "user=" + userId;
 
                     HttpResponseMessage response = await client.GetAsync(requestUri);
 

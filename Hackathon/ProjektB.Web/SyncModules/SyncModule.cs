@@ -137,11 +137,15 @@ namespace ProjektB.Web.SyncModules
             }
         }
 
-        public async Task<List<IUserDetails>> GetUserDetailsByApplicationUserId(string applicationUserId)
+        public async Task<List<UserDetails>> GetUserDetailsByApplicationUserId(string applicationUserId)
         {
-            List<IUserDetails> userDetails = new List<IUserDetails>();
+            List<UserDetails> userDetails = new List<UserDetails>();
             Repository repository = MvcApplication.Container.Resolve<Repository>();
             MapMyFitnessIntegration MapMyFitness = new MapMyFitnessIntegration();
+
+            FitbitIntegration fitbit = new FitbitIntegration();
+                string fitbitConsumerKey = ConfigurationManager.AppSettings["fitbitConsumerKey"];
+                string fitbitConsumerSecret = ConfigurationManager.AppSettings["fitbitConsumerSecret"];
 
             List<FitnessProvider> providers = repository.FitnessProviders.Where(x => x.ApplicationUserId == applicationUserId).ToList()
                     .Select(x => new FitnessProvider
@@ -166,14 +170,29 @@ namespace ProjektB.Web.SyncModules
                 {
                     case ProviderType.MapMyFitness:
                         {
-                        MapMyFitnessUser myFitnessUser = (MapMyFitnessUser)(await MapMyFitness.GetAuthenticatedUser("f34nz6t9h3unxp4s46bs2jg8py7kvq3e", payload.key));
-                        myFitnessUser.Activities = await MapMyFitness.GetWorkoutByUserId("f34nz6t9h3unxp4s46bs2jg8py7kvq3e", payload.key, myFitnessUser.UserId);
-                        userDetails.Add(myFitnessUser);
+                            MapMyFitnessUser myFitnessUser = (MapMyFitnessUser)(await MapMyFitness.GetAuthenticatedUser("f34nz6t9h3unxp4s46bs2jg8py7kvq3e", payload.key));
+                            myFitnessUser.Activities = await MapMyFitness.GetWorkoutByUserId("f34nz6t9h3unxp4s46bs2jg8py7kvq3e", payload.key, myFitnessUser.UserId);
+                            userDetails.Add(myFitnessUser);
                         }
                         break;
                     case ProviderType.FitBit:
                         {
-                            //var fitbitUser = await 
+                            FitnessProviderFBPayload fitnessPayload = JsonConvert.DeserializeObject<FitnessProviderFBPayload>(provider.ConnectionDetails);
+
+                            var fitbitUser = fitbit.GetAuthenticatedUser(fitbitConsumerKey, fitbitConsumerSecret,
+                                fitnessPayload.AuthToken, fitnessPayload.AuthTokenSecret);
+
+                            DateTime lastCheck = fitnessPayload.LastCheck;
+                            //zer0 becauze we wanna bring the stats for the whole day, yo
+                            int lastSteps = 0;
+
+                            //TODO: get a result, and process it!
+                            Activity activity = fitbit.GetWorkoutByUserId(fitbitConsumerKey, fitbitConsumerSecret,
+                                fitnessPayload.AuthToken, fitnessPayload.AuthTokenSecret, ref lastCheck, ref lastSteps);
+
+                            //we have only one activity that we can get from the Fitbit API
+                            fitbitUser.Activities = new List<Activity> { activity };
+                            userDetails.Add(fitbitUser);
                         }
                         break;
                 }

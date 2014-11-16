@@ -133,7 +133,7 @@ namespace ProjektB.Web.Controllers
            UserStatisticsViewModel userStatistics = new UserStatisticsViewModel();
 
            SyncModule SyncModule = new SyncModule();
-           List<IUserDetails> userDetails = await SyncModule.GetUserDetailsByApplicationUserId(UserId);
+           List<UserDetails> userDetails = await SyncModule.GetUserDetailsByApplicationUserId(UserId);
 
            userStatistics.FirstName = userDetails.FirstOrDefault().FirstName;
            userStatistics.LastName = userDetails.FirstOrDefault().LastName;
@@ -141,7 +141,7 @@ namespace ProjektB.Web.Controllers
 
             userStatistics.UserActivities = new List<Activity>();
 
-            foreach (IUserDetails ud in userDetails)
+            foreach (UserDetails ud in userDetails)
            {
                userStatistics.UserActivities.AddRange(ud.Activities);
            }
@@ -167,12 +167,12 @@ namespace ProjektB.Web.Controllers
                 switch (fp.Type)
                 {
                     case ProviderType.MapMyFitness:
-                        int mapMyFitnessUserId = userDetails.Find(x => x.Activities.FirstOrDefault().Provider == ProviderType.MapMyFitness).UserId;
-                        userStatistics.FitnessProviderLinks.Add(fp.Type, string.Format(@"http://www.mapmyfitness.com/profile/{0}/", mapMyFitnessUserId.ToString()));
+                        string mapMyFitnessUserId = userDetails.Find(x => x.Activities.FirstOrDefault().Provider == ProviderType.MapMyFitness).UserId;
+                        userStatistics.FitnessProviderLinks.Add(fp.Type, string.Format(@"http://www.mapmyfitness.com/profile/{0}/", mapMyFitnessUserId));
                         break;
                     case ProviderType.FitBit:
-                        int fitBitUserId = userDetails.Find(x => x.Activities.FirstOrDefault().Provider == ProviderType.FitBit).UserId;
-                        userStatistics.FitnessProviderLinks.Add(fp.Type, string.Format(@"https://www.fitbit.com/user/{0}", fitBitUserId.ToString()));
+                        string fitBitUserId = userDetails.Find(x => x.Activities.FirstOrDefault().Provider == ProviderType.FitBit).UserId;
+                        userStatistics.FitnessProviderLinks.Add(fp.Type, string.Format(@"https://www.fitbit.com/user/{0}", fitBitUserId));
                         break;
                 }
             }

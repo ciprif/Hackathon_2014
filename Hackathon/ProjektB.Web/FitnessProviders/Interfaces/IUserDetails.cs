@@ -9,19 +9,19 @@ namespace ProjektB.Web.FitnessProviders.Interfaces
 {
     public enum Gender { Male, Female }
 
-    public interface IUserDetails
+    public class UserDetails
     {
-        int UserId { get; set; }
-        string FirstName { get; set; }
-        string LastName { get; set; }
-        string DisplayName { get; set; }
-        string UserName { get; set; }
-        string Email { get; set; }
-        DateTime Birthday { get; set; }
-        Gender Gender { get; set; }
-        List<Activity> Activities { get; set; }
-        string ImagePath { get; set; }
-        IUserStats UserStats { get; set; }
-        IUserLocation Location { get; set; }
+        public string UserId { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string DisplayName { get; set; }
+        public string UserName { get; set; }
+        public string Email { get; set; }
+        public DateTime Birthday { get; set; }
+        public Gender Gender { get; set; }
+        public List<Activity> Activities { get; set; }
+        public string ImagePath { get; set; }
+        public IUserStats UserStats { get; set; }
+        public IUserLocation Location { get; set; }
     }
 }
