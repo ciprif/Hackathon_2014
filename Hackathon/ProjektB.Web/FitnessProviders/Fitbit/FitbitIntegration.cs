@@ -20,7 +20,23 @@ namespace ProjektB.Web.FitnessProviders.Fitbit
 
             global::Fitbit.Models.Activity activity =  client.GetDayActivity(DateTime.Now);
 
-            return null;
+            return new Activity
+            {
+                ActivityType = ActivityType.Walking,
+                Values = new List<ActivityValue> 
+                { 
+                    new ActivityValue 
+                    { 
+                        Unit = ActivityUnit.Steps,
+                        Value = activity.Summary.Steps
+                    },
+                    new ActivityValue
+                    {
+                        Unit = ActivityUnit.Calories,
+                        Value = activity.Summary.Steps / 5.035
+                    }
+                }
+            };
         }
     }
 }
