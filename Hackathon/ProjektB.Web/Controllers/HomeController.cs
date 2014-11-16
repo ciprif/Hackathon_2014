@@ -9,6 +9,9 @@ using Castle.Core.Logging;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using ProjektB.Web.SyncModules;
+using ProjektB.Web.Models.FitnessProviderModels;
+using ProjektB.Web.FitnessProviders.MapMyFitness.Models;
+using ProjektB.Web.FitnessProviders.Interfaces;
 
 namespace ProjektB.Web.Controllers
 {
@@ -114,6 +117,48 @@ namespace ProjektB.Web.Controllers
                                  }).GroupBy(a => a.TeamName);
 
             return View(userActivities);
+        }
+
+        public async Task<ActionResult> UserStatistics()
+        {
+           UserStatisticsViewModel userStatistics = new UserStatisticsViewModel();
+
+           SyncModule SyncModule = new SyncModule();
+           List<IUserDetails> userDetails = await SyncModule.GetUserDetailsByApplicationUserId(UserId);
+
+           userStatistics.FirstName = userDetails.FirstOrDefault().FirstName;
+           userStatistics.LastName = userDetails.FirstOrDefault().LastName;
+           userStatistics.Email = userDetails.FirstOrDefault().Email;
+           foreach(IUserDetails ud in userDetails)
+           {
+               userStatistics.UserActivities.AddRange(ud.Activities);
+           }
+
+           userStatistics.UserActivities = userStatistics.UserActivities.OrderByDescending(x => x.Timestamp).ToList();
+           userStatistics.Height = userDetails.FirstOrDefault(x => x.UserStats.Height > 0).UserStats.Height;
+           userStatistics.Weight = userDetails.FirstOrDefault(x => x.UserStats.Weight > 0).UserStats.Weight;
+
+           userStatistics.UserName = userStatistics.Email;
+           userStatistics.Team = Repository.UserDetails.Where(x => x.ApplicationUserId == UserId).ToList().Select(x => x.TeamId).ToList().FirstOrDefault();
+           userStatistics.TeamName = Repository.Teams.Where(x => x.Id == userStatistics.Team).ToList().Select(x => x.Name).ToList().FirstOrDefault();
+
+           List<FitnessProvider> providers = Repository.FitnessProviders.Where(x => x.ApplicationUserId == UserId).ToList()
+                  .Select(x => new FitnessProvider
+                  {
+                      Type = x.Type
+                  }).ToList();
+
+           foreach(FitnessProvider fp in providers)
+           {
+               //switch (fp.Type)
+               //{
+               //    case ProviderType.MapMyFitness:
+               //     userStatistics.FitnessProviderLinks.Add(fp.Type, string.Format(@"http://www.mapmyfitness.com/profile/{0}/", userDetails.Find(x => x.)
+               //     break;
+               //}
+           }
+
+           return View(userStatistics);
         }
     }
 }
