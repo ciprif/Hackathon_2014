@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using ProjektB.Web.FitnessProviders.Interfaces;
 using Castle.Core.Logging;
 using ProjektB.Web.Models.FitnessProviderModels;
+using ProjektB.Web.Models;
 
 namespace ProjektB.Web.FitnessProviders
 {
@@ -127,7 +128,7 @@ namespace ProjektB.Web.FitnessProviders
                             activity.Name = (string)workout["name"];
                             activity.ID = (int)workout["_links"]["self"][0]["id"];
                             activity.Duration = (int)workout["aggregates"]["active_time_total"];
-                            activity.Provider = "MapMyFitness";
+                            activity.Provider = ProviderType.MapMyFitness;
                             activity.Timestamp = DateTimeOffset.Parse((string)workout["start_datetime"]);
                             activity.Values = new List<ActivityValue>
                             {

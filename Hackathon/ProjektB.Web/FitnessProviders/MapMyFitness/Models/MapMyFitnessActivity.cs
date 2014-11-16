@@ -1,4 +1,5 @@
-﻿using ProjektB.Web.Models.FitnessProviderModels;
+﻿using ProjektB.Web.Models;
+using ProjektB.Web.Models.FitnessProviderModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,7 @@ namespace ProjektB.Web.FitnessProviders.MapMyFitness.Models
 
         public List<ActivityValue> Values { get; set; }
 
-        public string Provider { get; set; }
+        public ProviderType Provider { get; set; }
 
         public ActivityType ActivityType { get; set; }
     }

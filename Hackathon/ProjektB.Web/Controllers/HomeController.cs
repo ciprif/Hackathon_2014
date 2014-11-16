@@ -150,12 +150,12 @@ namespace ProjektB.Web.Controllers
 
            foreach(FitnessProvider fp in providers)
            {
-               //switch (fp.Type)
-               //{
-               //    case ProviderType.MapMyFitness:
-               //     userStatistics.FitnessProviderLinks.Add(fp.Type, string.Format(@"http://www.mapmyfitness.com/profile/{0}/", userDetails.Find(x => x.)
-               //     break;
-               //}
+               switch (fp.Type)
+               {
+                   case ProviderType.MapMyFitness:
+                       userStatistics.FitnessProviderLinks.Add(fp.Type, string.Format(@"http://www.mapmyfitness.com/profile/{0}/", userDetails.Find(x => x.Activities.FirstOrDefault().Provider == ProviderType.MapMyFitness).UserId));
+                    break;
+               }
            }
 
            return View(userStatistics);
