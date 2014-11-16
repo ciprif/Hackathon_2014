@@ -263,6 +263,9 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\DSC_6793.jpg" />
+    <Content Include="Content\DSC_6806.jpg" />
+    <Content Include="Content\DSC_6830.jpg" />
     <Content Include="Content\fitbit-1024-blk-onwhite.jpg" />
     <Content Include="Content\fitbit_logo.png" />
     <Content Include="favicon.ico" />
