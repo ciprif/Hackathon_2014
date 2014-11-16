@@ -23,7 +23,7 @@
         <a href="@Html.Raw(mapMyFitnessUrl)"><img src="https://d21oh8fj97neu1.cloudfront.net/pfq4cm3i/original/mmf_connect_med.png" /></a>
     </p>
     <p>
-        @Html.ActionLink("Add FitBit", "RedirectToFitbit")
+        @Html.ActionLink("Add FitBit", "RedirectToFitbit", null, new { @class = "btn btn-primary" })
     </p>
     <p>
         @Html.ActionLink("Join a Team »", "Index", "Teams", null, new { @class = "btn btn-primary" })
