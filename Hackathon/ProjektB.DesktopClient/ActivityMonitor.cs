@@ -65,7 +65,7 @@ namespace ProjektB.DesktopClient
 
             
 
-            if (lastInput.dwTime / 5 * 60 * 1000 >= 5)
+            if (lastInput.dwTime / 60.0 * 1000 >= 5)
             {
                 inactiviyMinutes += 5;
                 innactiveForTheLast5Min = true;
@@ -75,6 +75,7 @@ namespace ProjektB.DesktopClient
                 // there was some activiy in the last 5 mins, reset the
                 // innactivity counter
                 inactiviyMinutes = 0;
+                activityMinutes += 5;
             }
 
             //if there were 20 minutes of inactivity, reset the activity counter
@@ -96,7 +97,11 @@ namespace ProjektB.DesktopClient
 
                             if (needsMovement)
                             {
-                                MessageBox.Show("Hey there! Looks like you haven't done much movement in the past hour. How about you take a break.", "KernelFit", MessageBoxButtons.OKCancel);
+                                if (MessageBox.Show("Hey there! Looks like you haven't done much movement in the past hour. How about you take a break.", "KernelFit", MessageBoxButtons.OKCancel) == DialogResult.OK)
+                                {
+                                    //reset activity minutes
+                                    activityMinutes = 0;
+                                }
 
                             }
 

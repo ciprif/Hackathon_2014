@@ -44,7 +44,7 @@ namespace ProjektB.DesktopClient
             if (e.Button == MouseButtons.Left)
             {
                 // start our website
-                Process.Start("http://projektb.azurewebsites.net");
+                Process.Start("http://localhost/KernelFit");
             }
         }
     }

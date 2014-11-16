@@ -20,9 +20,9 @@ namespace ProjektB.Web.Controllers
             //TODO: finish this method!
             Repository repo = MvcApplication.Container.Resolve<Repository>();
             
-            var startTime = DateTimeOffset.Now.AddMinutes(-50);
+            var startTime = DateTimeOffset.Now.AddMinutes(-10);
             var recentActivities = repo.UserActivities.Where(x => x.ApplicationUserId == id && x.Timestamp > startTime);
-            double score = recentActivities.Sum(x => x.Score);
+            double score = recentActivities.ToList().Sum(x => x.Score);
 
             Object result = new
             {
