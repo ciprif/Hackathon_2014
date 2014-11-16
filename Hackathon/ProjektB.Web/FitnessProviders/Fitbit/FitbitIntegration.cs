@@ -11,7 +11,7 @@ namespace ProjektB.Web.FitnessProviders.Fitbit
     {
         public Activity GetWorkoutByUserId(string fitbitConsumerKey,
             string fitbitConsumerSecret, string fitbitAuthToken, 
-            string fitbitAuthTokenSecret)
+            string fitbitAuthTokenSecret, ref DateTime lastCheck, ref int lastSteps)
         {
             FitbitClient client = new FitbitClient(fitbitConsumerKey,
                 fitbitConsumerSecret,
@@ -19,6 +19,19 @@ namespace ProjektB.Web.FitnessProviders.Fitbit
                 fitbitAuthTokenSecret);
 
             global::Fitbit.Models.Activity activity =  client.GetDayActivity(DateTime.Now);
+
+            int apiSteps = activity.Summary.Steps;
+
+            int steps = apiSteps;
+            if (lastCheck == DateTime.Now.Date)
+            {
+                steps = apiSteps - lastSteps;
+            }
+
+            lastSteps = apiSteps;
+            lastCheck = DateTime.Now.Date;
+
+            if (steps == 0) return null;
 
             return new Activity
             {
@@ -28,14 +41,15 @@ namespace ProjektB.Web.FitnessProviders.Fitbit
                     new ActivityValue 
                     { 
                         Unit = ActivityUnit.Steps,
-                        Value = activity.Summary.Steps
+                        Value = steps
                     },
                     new ActivityValue
                     {
                         Unit = ActivityUnit.Calories,
-                        Value = activity.Summary.Steps / 5.035
+                        Value = steps / 5.035
                     }
-                }
+                },
+                Timestamp = DateTimeOffset.Now
             };
         }
     }
