@@ -78,7 +78,7 @@ namespace ProjektB.Web.SyncModules
                                 
                                     foreach (MapMyFitnessActivity act in myFitnessUser.Activities)
                                 {
-                                    if (act.Timestamp.Subtract(latestTimestamp).Minutes > 10)
+                                    if (act.Timestamp.Subtract(latestTimestamp).TotalMinutes > 1)
                                     {
                                         //joules to calories to kilocalories / 50
                                         double score = (act.Values.Find(x => x.Unit == ActivityUnit.Calories).Value * 0.239005736) / 50000;
