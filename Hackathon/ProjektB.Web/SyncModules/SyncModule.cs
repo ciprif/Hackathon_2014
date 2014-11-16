@@ -82,22 +82,22 @@ namespace ProjektB.Web.SyncModules
                                 myFitnessUser.Activities = await MapMyFitness.GetWorkoutByUserId("f34nz6t9h3unxp4s46bs2jg8py7kvq3e", payload.key, myFitnessUser.UserId, fromDate);
                                 
                                     foreach (MapMyFitnessActivity act in myFitnessUser.Activities)
-                                {
-                                    if (act.Timestamp.Subtract(latestTimestamp).Minutes > 10)
                                     {
-                                        //joules to calories to kilocalories / 50
-                                        double score = (act.Values.Find(x => x.Unit == ActivityUnit.Calories).Value * 0.239005736) / 50000;
-
-                                        repository.UserActivities.Add(new UserActivity
+                                        if (act.Timestamp.Subtract(latestTimestamp).Minutes > 10)
                                         {
-                                            ActivityType = act.ActivityType,
-                                            ApplicationUserId = user.Id,
-                                            ProviderType = provider.Type,
-                                            Score = score,
-                                            Timestamp = act.Timestamp
-                                        });
+                                            //joules to calories to kilocalories / 50
+                                            double score = (act.Values.Find(x => x.Unit == ActivityUnit.Calories).Value * 0.239005736) / 50000;
+
+                                            repository.UserActivities.Add(new UserActivity
+                                            {
+                                                ActivityType = act.ActivityType,
+                                                ApplicationUserId = user.Id,
+                                                ProviderType = provider.Type,
+                                                Score = score,
+                                                Timestamp = act.Timestamp
+                                            });
+                                        }
                                     }
-                                }
                                 }
                                 break;
                             case ProviderType.FitBit:

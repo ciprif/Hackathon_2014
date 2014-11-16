@@ -129,9 +129,12 @@ namespace ProjektB.Web.Controllers
            userStatistics.FirstName = userDetails.FirstOrDefault().FirstName;
            userStatistics.LastName = userDetails.FirstOrDefault().LastName;
            userStatistics.Email = userDetails.FirstOrDefault().Email;
+
+           userStatistics.UserActivities = new List<Activity>();
+
            foreach(IUserDetails ud in userDetails)
            {
-               userStatistics.UserActivities.AddRange(ud.Activities);
+                userStatistics.UserActivities.AddRange(ud.Activities);
            }
 
            userStatistics.UserActivities = userStatistics.UserActivities.OrderByDescending(x => x.Timestamp).ToList();
@@ -148,13 +151,16 @@ namespace ProjektB.Web.Controllers
                       Type = x.Type
                   }).ToList();
 
+           userStatistics.FitnessProviderLinks = new Dictionary<ProviderType, string>();
+
            foreach(FitnessProvider fp in providers)
            {
                switch (fp.Type)
                {
                    case ProviderType.MapMyFitness:
-                       userStatistics.FitnessProviderLinks.Add(fp.Type, string.Format(@"http://www.mapmyfitness.com/profile/{0}/", userDetails.Find(x => x.Activities.FirstOrDefault().Provider == ProviderType.MapMyFitness).UserId));
-                    break;
+                        int mapMyFitnessUserId = userDetails.Find(x => x.Activities.FirstOrDefault().Provider == ProviderType.MapMyFitness).UserId;
+                        userStatistics.FitnessProviderLinks.Add(fp.Type, string.Format(@"http://www.mapmyfitness.com/profile/{0}/", mapMyFitnessUserId.ToString()));
+                        break;
                }
            }
 

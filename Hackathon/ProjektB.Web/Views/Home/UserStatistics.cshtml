@@ -8,16 +8,22 @@
 
 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
     <div class="panel panel-default">
-        <div class="panel-heading" role="tab" id="heading_@i">
+        <div class="panel-heading" role="tab" id="heading_1">
             <h4 class="panel-title">
-                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse_@i" aria-expanded="false" aria-controls="collapse_@i">
-                    @group.Key
+                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse_1" aria-expanded="false" aria-controls="collapse_1">
+                    @Model.FirstName @Model.LastName
                 </a>
             </h4>
-        </div>
-        <div id="collapse_@i" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading_@i">
+            <h4 class="panel-title">
+                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse_1" aria-expanded="false" aria-controls="collapse_1">
+                    Email: @Model.Email
+                </a>
+            </h4>
+
+            <img>
+        </img>
+        <div id="collapse_1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading_1">
             <div class="panel-body">
-                @*@item.Name - description*@
             </div>
         </div>
     </div>

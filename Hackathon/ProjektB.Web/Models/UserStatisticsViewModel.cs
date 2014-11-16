@@ -19,5 +19,6 @@ namespace ProjektB.Web.Models
         public Dictionary<ProviderType, string> FitnessProviderLinks { get; set; }
         public double Height { get; set; }
         public double Weight { get; set; }
+        public string ImagePath { get; set; }
     }
 }
