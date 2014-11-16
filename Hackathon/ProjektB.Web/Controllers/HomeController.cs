@@ -170,6 +170,10 @@ namespace ProjektB.Web.Controllers
                         int mapMyFitnessUserId = userDetails.Find(x => x.Activities.FirstOrDefault().Provider == ProviderType.MapMyFitness).UserId;
                         userStatistics.FitnessProviderLinks.Add(fp.Type, string.Format(@"http://www.mapmyfitness.com/profile/{0}/", mapMyFitnessUserId.ToString()));
                         break;
+                    case ProviderType.FitBit:
+                        int fitBitUserId = userDetails.Find(x => x.Activities.FirstOrDefault().Provider == ProviderType.FitBit).UserId;
+                        userStatistics.FitnessProviderLinks.Add(fp.Type, string.Format(@"https://www.fitbit.com/user/{0}", fitBitUserId.ToString()));
+                        break;
                 }
             }
 

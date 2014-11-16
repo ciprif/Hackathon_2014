@@ -6,135 +6,72 @@
 
 <h2>User Statistics</h2>
 
-@*<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-    <div class="panel panel-default">
-        <div class="panel-heading" role="tab" id="heading_1">
-            <div>
+<div id="accordion" class="panel-group" role="tablist" aria-multiselectable="true" style="margin:50px auto; width:100%">
+    <div id="LeftCol" class="row">
+        <div class="col-md-4">
+            <div id="Photo">
                 <img src="@Model.ImagePath" style="border-radius:5%" />
-                <table style="position:relative; left:350px; top:10px;">
-                    <tbody>
-                        <tr>
-                            <td>Full Name</td>
-                            <td>@Model.FirstName @Model.LastName</td>
-                        </tr>
-                        <tr>
-                            <td>E-mail address</td>
-                            <td>@Model.Email</td>
-                        </tr>
-                    </tbody>
-                </table>
             </div>
-            </img>
-            <div id="collapse_1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading_1">
+        </div>
+        <div id="Info" class="col-md-8">
+            <table class="table table-striped" style="text-align: left;">
+                <tr>
+                    <td>Full Name</td>
+                    <td>@Model.FirstName @Model.LastName</td>
+                </tr>
+                <tr>
+                    <td>E-mail address</td>
+                    <td>@Model.Email</td>
+                </tr>
+                <tr>
+                    <td>Gender</td>
+                    <td>@Model.Gender</td>
+                </tr>
+                <tr>
+                    <td>Height</td>
+                    <td>@Model.Height M</td>
+                </tr>
+                <tr>
+                    <td>Weight</td>
+                    <td>@Model.Weight Kg</td>
+                </tr>
+                <tr>
+                    <td>KernelFit Score</td>
+                    <td>@Model.Score Pts</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <a id="heading_activities" class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapsed_activities" aria-expanded="false" aria-controls="collapsed_activities">
+                            Activities (Expand)
+                        </a>
+                    </td>
+                    <td></td>
+                </tr>
+            </table>
+            <div id="collapsed_activities" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading_activities">
                 <div class="panel-body">
+                    <table class="table table-striped" style="text-align: left;">
+                        <tr>
+                            <th>Activity</th>
+                            <th>Score</th>
+                        </tr>
+                        @foreach (var activity in @Model.UserActivities)
+                        {
+                            <tr>
+                                <td>
+                                    @activity.Name
+                                </td>
+                                <td>
+                                    @Math.Round(activity.Values.FirstOrDefault().Value, 2)  @(activity.Values.FirstOrDefault().Unit == ProjektB.Web.Models.FitnessProviderModels.ActivityUnit.Distance ? "Meters" : "Calories")
+                                </td>
+                            </tr>
+                        }
+                    </table>
                 </div>
             </div>
         </div>
-    </div>*@
-
-
-<style type="text/css">
-    #LeftCol {
-        /* Move it to the left */
-        float: left;
-        width: 320px;
-        text-align: center;
-        /* Move it away from the content */
-        margin-right: 50px;
-        e */ border: 1px solid brown;
-    }
-
-    #Photo {
-        /* Width and height of photo container */
-        width: 320px;
-        height: 320px;
-    }
-
-    #PhotoOptions {
-        text-align: center;
-        width: 320px;
-    }
-
-    #Info {
-        width: 400px;
-        text-align: center;
-        /* Move it to the right */
-        float: right;
-        margin-right: 30%;
-        margin-top: 20px;
-    }
-</style>
-
-<div id="accordion" class="panel-group" role="tablist" aria-multiselectable="true" style="margin:50px auto; width:100%">
-    <div id="LeftCol">
-        <div id="Photo">
-            <img src="@Model.ImagePath" style="border-radius:5%" />
-        </div>
-        <div id="ProfileOptions">
-            <h4 class="panel-title"><strong>@Model.FirstName</strong> </h4>
-        </div>
     </div>
-
-    <div id="Info">
-        <table class="table table-striped" style="text-align: left;">
-            <tr>
-                <td>Full Name</td>
-                <td>@Model.FirstName @Model.LastName</td>
-            </tr>
-            <tr>
-                <td>E-mail address</td>
-                <td>@Model.Email</td>
-            </tr>
-            <tr>
-                <td>Gender</td>
-                <td>@Model.Gender</td>
-            </tr>
-            <tr>
-                <td>Height</td>
-                <td>@Model.Height M</td>
-            </tr>
-            <tr>
-                <td>Weight</td>
-                <td>@Model.Weight Kg</td>
-            </tr>
-            <tr>
-                <td>KernelFit Score</td>
-                <td>@Model.Score Pts</td>
-            </tr>
-            <tr>
-                <td>
-                    <a id="heading_activities" class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapsed_activities" aria-expanded="false" aria-controls="collapsed_activities">
-                        Activities (Expand)
-                    </a>
-                </td>
-                <td></td>
-            </tr>
-        </table>
-        <div id="collapsed_activities" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading_activities">
-            <div class="panel-body">
-                <table class="table table-striped" style="text-align: left;">
-                    <tr>
-                        <th>Activity</th>
-                        <th>Score</th>
-                    </tr>
-                    @foreach (var activity in @Model.UserActivities)
-                    {
-                        <tr>
-                            <td>
-                                @activity.Name
-                            </td>
-                            <td>
-                                @Math.Round(activity.Values.FirstOrDefault().Value, 2)  @(activity.Values.FirstOrDefault().Unit == ProjektB.Web.Models.FitnessProviderModels.ActivityUnit.Distance ? "Meters" : "Calories")
-                            </td>
-                        </tr>
-                    }
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <!-- Needed because other elements inside ProfilePage have floats -->
-    <div style="clear:both"></div>
 </div>
 
 
