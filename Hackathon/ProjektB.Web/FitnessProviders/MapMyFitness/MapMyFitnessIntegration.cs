@@ -72,7 +72,7 @@ namespace ProjektB.Web.FitnessProviders
                     }
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Logger.Error("An error has occured: " + " " + e.InnerException.Message);
             }
@@ -121,9 +121,9 @@ namespace ProjektB.Web.FitnessProviders
                         JObject Content = await response.Content.ReadAsAsync<JObject>();
                         JArray workouts = Content["_embedded"]["workouts"] as JArray;
 
-                        foreach(JToken workout in workouts)
+                        foreach (JToken workout in workouts)
                         {
-                            MapMyFitnessActivity activity =  new MapMyFitnessActivity();
+                            MapMyFitnessActivity activity = new MapMyFitnessActivity();
                             activity.Description = (string)workout["notes"];
                             activity.Name = (string)workout["name"];
                             activity.ID = (int)workout["_links"]["self"][0]["id"];
@@ -134,11 +134,11 @@ namespace ProjektB.Web.FitnessProviders
                             {
                                 new ActivityValue{
                                     Unit = ActivityUnit.Distance,
-                                    Value = (double)workout["aggregates"]["distance_total"]
+                                    Value = (double)(workout["aggregates"]["distance_total"] ?? 0 )
                                 },
                                 new ActivityValue{
                                     Unit = ActivityUnit.Calories,
-                                    Value = (double)workout["aggregates"]["metabolic_energy_total"]
+                                    Value = (double)(workout["aggregates"]["metabolic_energy_total"] ?? 0)
                                 }
                             };
 
@@ -178,7 +178,7 @@ namespace ProjektB.Web.FitnessProviders
             }
             catch (Exception e)
             {
-                Logger.Debug("An error has occured: " + " " + e.InnerException.Message);
+                Logger.Debug("An error has occured: " + e);
             }
 
             return activities;

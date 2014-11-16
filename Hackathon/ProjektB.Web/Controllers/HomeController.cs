@@ -49,6 +49,11 @@ namespace ProjektB.Web.Controllers
             {
                 ViewBag.HasProviders = Repository.FitnessProviders.Where(p => p.ApplicationUserId == UserId).Count() > 0;
                 ViewBag.HasTeam = Repository.UserDetails.Where(u => u.ApplicationUserId == UserId).Count() > 0;
+
+                if (ViewBag.HasProviders && ViewBag.HasTeam)
+                {
+                    return View("LeaderBoard", GetUserActivities());
+            }
             }
 
             return View();
@@ -104,6 +109,13 @@ namespace ProjektB.Web.Controllers
 
         public ActionResult LeaderBoard()
         {
+            var userActivities = GetUserActivities();
+
+            return View(userActivities);
+        }
+
+        private IEnumerable<IGrouping<string, ActivityViewModel>> GetUserActivities()
+        {
             var userActivities = (from activity in Repository.UserActivities
                                  join user in Repository.Users on activity.ApplicationUserId equals user.Id
                                  join detail in Repository.UserDetails on activity.ApplicationUserId equals detail.ApplicationUserId
@@ -120,16 +132,14 @@ namespace ProjektB.Web.Controllers
                                   }).GroupBy(a => a.TeamName).ToList().OrderByDescending(g => g.GetScore());
 
 
-            var leaderBoard = new LeaderBoardViewModel
-            {
-                TeamActivities = userActivities
-            };
-
-            return View(userActivities);
+            return userActivities;
         }
 
-        public async Task<ActionResult> UserStatistics()
+        public async Task<ActionResult> UserStatistics(string userId)
         {
+            if (userId == null)
+                userId = UserId;
+
            UserStatisticsViewModel userStatistics = new UserStatisticsViewModel();
 
            SyncModule SyncModule = new SyncModule();
@@ -151,10 +161,10 @@ namespace ProjektB.Web.Controllers
             userStatistics.Weight = Math.Round(userDetails.FirstOrDefault(x => x.UserStats.Weight > 0).UserStats.Weight, 2);
 
            userStatistics.UserName = userStatistics.Email;
-           userStatistics.Team = Repository.UserDetails.Where(x => x.ApplicationUserId == UserId).ToList().Select(x => x.TeamId).ToList().FirstOrDefault();
+            userStatistics.Team = Repository.UserDetails.Where(x => x.ApplicationUserId == userId).ToList().Select(x => x.TeamId).ToList().FirstOrDefault();
            userStatistics.TeamName = Repository.Teams.Where(x => x.Id == userStatistics.Team).ToList().Select(x => x.Name).ToList().FirstOrDefault();
 
-           List<FitnessProvider> providers = Repository.FitnessProviders.Where(x => x.ApplicationUserId == UserId).ToList()
+            List<FitnessProvider> providers = Repository.FitnessProviders.Where(x => x.ApplicationUserId == userId).ToList()
                   .Select(x => new FitnessProvider
                   {
                       Type = x.Type
@@ -177,7 +187,7 @@ namespace ProjektB.Web.Controllers
                 }
             }
 
-            List<UserActivity> dbActivities = Repository.UserActivities.Where(x => x.ApplicationUserId == UserId).ToList();
+            List<UserActivity> dbActivities = Repository.UserActivities.Where(x => x.ApplicationUserId == userId).ToList();
 
             userStatistics.Score = 0;
             foreach (UserActivity act in dbActivities)
@@ -186,7 +196,7 @@ namespace ProjektB.Web.Controllers
                 userStatistics.Score += act.Score;
            }
 
-            userStatistics.ImagePath = string.Format("http://graph.facebook.com/{0}/picture?height=300&width=300", Repository.Users.Where(x => x.Id == UserId).FirstOrDefault().Logins.FirstOrDefault().ProviderKey);
+            userStatistics.ImagePath = string.Format("http://graph.facebook.com/{0}/picture?height=300&width=300", Repository.Users.Where(x => x.Id == userId).FirstOrDefault().Logins.FirstOrDefault().ProviderKey);
             userStatistics.Gender = userDetails.FirstOrDefault().Gender == Gender.Male ? "Male" : "Female";
            return View(userStatistics);
         }

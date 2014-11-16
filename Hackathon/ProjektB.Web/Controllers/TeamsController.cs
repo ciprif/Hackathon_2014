@@ -18,6 +18,12 @@ namespace ProjektB.Web.Controllers
         // GET: Teams
         public ActionResult Index()
         {
+            var userDetail = Repository.UserDetails.FirstOrDefault(u => u.ApplicationUserId == UserId);
+            if (userDetail != null)
+            {
+                ViewBag.TeamId = userDetail.TeamId;
+            }
+
             return View(db.Teams.ToList());
         }
 
