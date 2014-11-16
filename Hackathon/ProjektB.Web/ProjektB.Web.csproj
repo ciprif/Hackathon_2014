@@ -206,6 +206,7 @@
   <ItemGroup>
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\FitnessProvidersController.cs" />
+    <Compile Include="FitnessProviders\Fitbit\FitbitIntegration.cs" />
     <Compile Include="FitnessProviders\Interfaces\IUserDetails.cs" />
     <Compile Include="FitnessProviders\Interfaces\IUserLocation.cs" />
     <Compile Include="FitnessProviders\Interfaces\IUserStats.cs" />

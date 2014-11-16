@@ -8,6 +8,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using Newtonsoft.Json;
+using ProjektB.Web.FitnessProviders.Fitbit;
+using System.Configuration;
 
 
 namespace ProjektB.Web.SyncModules
@@ -29,6 +31,9 @@ namespace ProjektB.Web.SyncModules
                         Id = x.Id
                     }).ToList();
 
+                FitbitIntegration fitbit = new FitbitIntegration();
+                string fitbitConsumerKey = ConfigurationManager.AppSettings["fitbitConsumerKey"];
+                string fitbitConsumerSecret = ConfigurationManager.AppSettings["fitbitConsumerSecret"];
 
                 MapMyFitnessIntegration MapMyFitness = new MapMyFitnessIntegration();
                 List<MapMyFitnessUser> mapMyFitnessUsers = new List<MapMyFitnessUser>();
@@ -52,31 +57,42 @@ namespace ProjektB.Web.SyncModules
                             latestTimestamp = dbUserActivities.OrderByDescending(x => x.Timestamp).ToList().FirstOrDefault().Timestamp;
                         }
 
-                        FitnessProviderPayload payload = JsonConvert.DeserializeObject<FitnessProviderPayload>(provider.ConnectionDetails);
+                        
 
                         switch(provider.Type)
                         {
                             case ProviderType.MapMyFitness:
-                                MapMyFitnessUser myFitnessUser = (MapMyFitnessUser)(await MapMyFitness.GetAuthenticatedUser("f34nz6t9h3unxp4s46bs2jg8py7kvq3e",  payload.key));
-                                myFitnessUser.Activities = await MapMyFitness.GetWorkoutByUserId("f34nz6t9h3unxp4s46bs2jg8py7kvq3e", payload.key, myFitnessUser.UserId, fromDate);
-                                
-                                foreach(MapMyFitnessActivity act in myFitnessUser.Activities)
                                 {
-                                    if (act.Timestamp.Subtract(latestTimestamp).Minutes > 10)
-                                    {
-                                        double score = act.Values.Find(x => x.Unit == ActivityUnit.Calories).Value / 50;
+                                    FitnessProviderPayload payload = JsonConvert.DeserializeObject<FitnessProviderPayload>(provider.ConnectionDetails);
+                                    MapMyFitnessUser myFitnessUser = (MapMyFitnessUser)(await MapMyFitness.GetAuthenticatedUser("f34nz6t9h3unxp4s46bs2jg8py7kvq3e", payload.key));
+                                    myFitnessUser.Activities = await MapMyFitness.GetWorkoutByUserId("f34nz6t9h3unxp4s46bs2jg8py7kvq3e", payload.key, myFitnessUser.UserId, fromDate);
 
-                                        repository.UserActivities.Add(new UserActivity
+                                    foreach (MapMyFitnessActivity act in myFitnessUser.Activities)
+                                    {
+                                        if (act.Timestamp.Subtract(latestTimestamp).Minutes > 10)
                                         {
-                                            ActivityType = act.ActivityType,
-                                            ApplicationUserId = user.Id,
-                                            ProviderType = provider.Type,
-                                            Score = score,
-                                            Timestamp = act.Timestamp
-                                        });
+                                            double score = act.Values.Find(x => x.Unit == ActivityUnit.Calories).Value / 50;
+
+                                            repository.UserActivities.Add(new UserActivity
+                                            {
+                                                ActivityType = act.ActivityType,
+                                                ApplicationUserId = user.Id,
+                                                ProviderType = provider.Type,
+                                                Score = score,
+                                                Timestamp = act.Timestamp
+                                            });
+                                        }
                                     }
                                 }
+                                break;
+                            case ProviderType.FitBit:
+                                {
+                                    FitnessProviderFBPayload payload = JsonConvert.DeserializeObject<FitnessProviderFBPayload>(provider.ConnectionDetails);
 
+                                    //TODO: get a result, and process it!
+                                    fitbit.GetWorkoutByUserId(fitbitConsumerKey, fitbitConsumerSecret,
+                                        payload.AuthToken, payload.AuthTokenSecret);
+                                }
                                 break;
                         }
                     }
