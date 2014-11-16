@@ -22,3 +22,12 @@ select,
 textarea {
     max-width: 280px;
 }
+
+.circular {
+    width: 50px;
+    height: 50px;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    overflow: hidden;
+}
