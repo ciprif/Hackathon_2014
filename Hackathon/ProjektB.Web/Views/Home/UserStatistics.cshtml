@@ -6,19 +6,72 @@
 
 <h2>User Statistics</h2>
 
-<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-    <div class="panel panel-default">
-        <div class="panel-heading" role="tab" id="heading_@i">
-            <h4 class="panel-title">
-                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse_@i" aria-expanded="false" aria-controls="collapse_@i">
-                    @group.Key
-                </a>
-            </h4>
+<div id="accordion" class="panel-group" role="tablist" aria-multiselectable="true" style="margin:50px auto; width:100%">
+    <div id="LeftCol" class="row">
+        <div class="col-md-4">
+            <div id="Photo">
+                <img src="@Model.ImagePath" style="border-radius:5%" />
+            </div>
         </div>
-        <div id="collapse_@i" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading_@i">
-            <div class="panel-body">
-                @*@item.Name - description*@
+        <div id="Info" class="col-md-8">
+            <table class="table table-striped" style="text-align: left;">
+                <tr>
+                    <td>Full Name</td>
+                    <td>@Model.FirstName @Model.LastName</td>
+                </tr>
+                <tr>
+                    <td>E-mail address</td>
+                    <td>@Model.Email</td>
+                </tr>
+                <tr>
+                    <td>Gender</td>
+                    <td>@Model.Gender</td>
+                </tr>
+                <tr>
+                    <td>Height</td>
+                    <td>@Model.Height M</td>
+                </tr>
+                <tr>
+                    <td>Weight</td>
+                    <td>@Model.Weight Kg</td>
+                </tr>
+                <tr>
+                    <td>KernelFit Score</td>
+                    <td>@Model.Score Pts</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <a id="heading_activities" class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapsed_activities" aria-expanded="false" aria-controls="collapsed_activities">
+                            Activities (Expand)
+                        </a>
+                    </td>
+                    <td></td>
+                </tr>
+            </table>
+            <div id="collapsed_activities" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading_activities">
+                <div class="panel-body">
+                    <table class="table table-striped" style="text-align: left;">
+                        <tr>
+                            <th>Activity</th>
+                            <th>Score</th>
+                        </tr>
+                        @foreach (var activity in @Model.UserActivities)
+                        {
+                            <tr>
+                                <td>
+                                    @activity.Name
+                                </td>
+                                <td>
+                                    @Math.Round(activity.Values.FirstOrDefault().Value, 2)  @(activity.Values.FirstOrDefault().Unit == ProjektB.Web.Models.FitnessProviderModels.ActivityUnit.Distance ? "Meters" : "Calories")
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+

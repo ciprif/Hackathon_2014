@@ -1,4 +1,5 @@
-﻿using ProjektB.Web.Models.FitnessProviderModels;
+﻿using ProjektB.Web.Models;
+using ProjektB.Web.Models.FitnessProviderModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;

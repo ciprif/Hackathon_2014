@@ -105,15 +105,15 @@ namespace ProjektB.Web.Controllers
         public ActionResult LeaderBoard()
         {
             var userActivities = (from activity in Repository.UserActivities
-                                  join user in Repository.Users on activity.ApplicationUserId equals user.Id
-                                  join detail in Repository.UserDetails on activity.ApplicationUserId equals detail.ApplicationUserId
-                                  join team in Repository.Teams on detail.TeamId equals team.Id
-                                  select new ActivityViewModel
-                                  {
-                                      UserName = user.UserName,
-                                      ActivityType = activity.ActivityType,
-                                      Score = activity.Score,
-                                      TeamId = detail.TeamId,
+                                 join user in Repository.Users on activity.ApplicationUserId equals user.Id
+                                 join detail in Repository.UserDetails on activity.ApplicationUserId equals detail.ApplicationUserId
+                                 join team in Repository.Teams on detail.TeamId equals team.Id
+                                 select new ActivityViewModel
+                                 {
+                                     UserName = user.UserName,
+                                     ActivityType = activity.ActivityType,
+                                     Score = activity.Score,
+                                     TeamId = detail.TeamId,
                                       TeamName = team.Name,
                                       TimeStamp = activity.Timestamp,
                                       UserLogin = user.Logins.FirstOrDefault()
@@ -130,44 +130,65 @@ namespace ProjektB.Web.Controllers
 
         public async Task<ActionResult> UserStatistics()
         {
-            UserStatisticsViewModel userStatistics = new UserStatisticsViewModel();
+           UserStatisticsViewModel userStatistics = new UserStatisticsViewModel();
 
-            SyncModule SyncModule = new SyncModule();
-            List<IUserDetails> userDetails = await SyncModule.GetUserDetailsByApplicationUserId(UserId);
+           SyncModule SyncModule = new SyncModule();
+           List<IUserDetails> userDetails = await SyncModule.GetUserDetailsByApplicationUserId(UserId);
 
-            userStatistics.FirstName = userDetails.FirstOrDefault().FirstName;
-            userStatistics.LastName = userDetails.FirstOrDefault().LastName;
-            userStatistics.Email = userDetails.FirstOrDefault().Email;
+           userStatistics.FirstName = userDetails.FirstOrDefault().FirstName;
+           userStatistics.LastName = userDetails.FirstOrDefault().LastName;
+           userStatistics.Email = userDetails.FirstOrDefault().Email;
+
+            userStatistics.UserActivities = new List<Activity>();
+
             foreach (IUserDetails ud in userDetails)
-            {
-                userStatistics.UserActivities.AddRange(ud.Activities);
-            }
+           {
+               userStatistics.UserActivities.AddRange(ud.Activities);
+           }
 
-            userStatistics.UserActivities = userStatistics.UserActivities.OrderByDescending(x => x.Timestamp).ToList();
-            userStatistics.Height = userDetails.FirstOrDefault(x => x.UserStats.Height > 0).UserStats.Height;
-            userStatistics.Weight = userDetails.FirstOrDefault(x => x.UserStats.Weight > 0).UserStats.Weight;
+           userStatistics.UserActivities = userStatistics.UserActivities.OrderByDescending(x => x.Timestamp).ToList();
+            userStatistics.Height = Math.Round(userDetails.FirstOrDefault(x => x.UserStats.Height > 0).UserStats.Height, 2);
+            userStatistics.Weight = Math.Round(userDetails.FirstOrDefault(x => x.UserStats.Weight > 0).UserStats.Weight, 2);
 
-            userStatistics.UserName = userStatistics.Email;
-            userStatistics.Team = Repository.UserDetails.Where(x => x.ApplicationUserId == UserId).ToList().Select(x => x.TeamId).ToList().FirstOrDefault();
-            userStatistics.TeamName = Repository.Teams.Where(x => x.Id == userStatistics.Team).ToList().Select(x => x.Name).ToList().FirstOrDefault();
+           userStatistics.UserName = userStatistics.Email;
+           userStatistics.Team = Repository.UserDetails.Where(x => x.ApplicationUserId == UserId).ToList().Select(x => x.TeamId).ToList().FirstOrDefault();
+           userStatistics.TeamName = Repository.Teams.Where(x => x.Id == userStatistics.Team).ToList().Select(x => x.Name).ToList().FirstOrDefault();
 
-            List<FitnessProvider> providers = Repository.FitnessProviders.Where(x => x.ApplicationUserId == UserId).ToList()
-                   .Select(x => new FitnessProvider
-                   {
-                       Type = x.Type
-                   }).ToList();
+           List<FitnessProvider> providers = Repository.FitnessProviders.Where(x => x.ApplicationUserId == UserId).ToList()
+                  .Select(x => new FitnessProvider
+                  {
+                      Type = x.Type
+                  }).ToList();
+
+            userStatistics.FitnessProviderLinks = new Dictionary<ProviderType, string>();
 
             foreach (FitnessProvider fp in providers)
             {
-                //switch (fp.Type)
-                //{
-                //    case ProviderType.MapMyFitness:
-                //     userStatistics.FitnessProviderLinks.Add(fp.Type, string.Format(@"http://www.mapmyfitness.com/profile/{0}/", userDetails.Find(x => x.)
-                //     break;
-                //}
+                switch (fp.Type)
+                {
+                    case ProviderType.MapMyFitness:
+                        int mapMyFitnessUserId = userDetails.Find(x => x.Activities.FirstOrDefault().Provider == ProviderType.MapMyFitness).UserId;
+                        userStatistics.FitnessProviderLinks.Add(fp.Type, string.Format(@"http://www.mapmyfitness.com/profile/{0}/", mapMyFitnessUserId.ToString()));
+                        break;
+                    case ProviderType.FitBit:
+                        int fitBitUserId = userDetails.Find(x => x.Activities.FirstOrDefault().Provider == ProviderType.FitBit).UserId;
+                        userStatistics.FitnessProviderLinks.Add(fp.Type, string.Format(@"https://www.fitbit.com/user/{0}", fitBitUserId.ToString()));
+                        break;
+                }
             }
 
-            return View(userStatistics);
+            List<UserActivity> dbActivities = Repository.UserActivities.Where(x => x.ApplicationUserId == UserId).ToList();
+
+            userStatistics.Score = 0;
+            foreach (UserActivity act in dbActivities)
+            foreach (FitnessProvider fp in providers)
+           {
+                userStatistics.Score += act.Score;
+           }
+
+            userStatistics.ImagePath = string.Format("http://graph.facebook.com/{0}/picture?height=300&width=300", Repository.Users.Where(x => x.Id == UserId).FirstOrDefault().Logins.FirstOrDefault().ProviderKey);
+            userStatistics.Gender = userDetails.FirstOrDefault().Gender == Gender.Male ? "Male" : "Female";
+           return View(userStatistics);
         }
     }
 }

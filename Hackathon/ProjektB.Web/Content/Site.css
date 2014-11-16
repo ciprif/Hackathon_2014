@@ -44,4 +44,5 @@ textarea {
     text-align: center;
     vertical-align:middle;
     font: 28px Arial, sans-serif;
+    display:inline-block;
 }

@@ -29,7 +29,7 @@ namespace ProjektB.Web.Models.FitnessProviderModels
         public int Duration { get; set; }
         public DateTimeOffset Timestamp { get; set; }
         public List<ActivityValue> Values { get; set; }
-        public string Provider { get; set; }
+        public ProviderType Provider { get; set; }
         public ActivityType ActivityType { get; set; }
     }
 }

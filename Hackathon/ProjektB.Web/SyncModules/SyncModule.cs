@@ -166,9 +166,9 @@ namespace ProjektB.Web.SyncModules
                 {
                     case ProviderType.MapMyFitness:
                         {
-                            MapMyFitnessUser myFitnessUser = (MapMyFitnessUser)(await MapMyFitness.GetAuthenticatedUser("f34nz6t9h3unxp4s46bs2jg8py7kvq3e", payload.key));
-                            myFitnessUser.Activities = await MapMyFitness.GetWorkoutByUserId("f34nz6t9h3unxp4s46bs2jg8py7kvq3e", payload.key, myFitnessUser.UserId);
-                            userDetails.Add(myFitnessUser);
+                        MapMyFitnessUser myFitnessUser = (MapMyFitnessUser)(await MapMyFitness.GetAuthenticatedUser("f34nz6t9h3unxp4s46bs2jg8py7kvq3e", payload.key));
+                        myFitnessUser.Activities = await MapMyFitness.GetWorkoutByUserId("f34nz6t9h3unxp4s46bs2jg8py7kvq3e", payload.key, myFitnessUser.UserId);
+                        userDetails.Add(myFitnessUser);
                         }
                         break;
                     case ProviderType.FitBit:
