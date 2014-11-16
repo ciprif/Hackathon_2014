@@ -9,6 +9,7 @@ using Castle.Core.Logging;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using ProjektB.Web.SyncModules;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace ProjektB.Web.Controllers
 {
@@ -101,17 +102,20 @@ namespace ProjektB.Web.Controllers
         public ActionResult LeaderBoard()
         {
             var userActivities = (from activity in Repository.UserActivities
-                                 join user in Repository.Users on activity.ApplicationUserId equals user.Id
-                                 join detail in Repository.UserDetails on activity.ApplicationUserId equals detail.ApplicationUserId
-                                 join team in Repository.Teams on detail.TeamId equals team.Id
-                                 select new ActivityViewModel
-                                 {
-                                     UserName = user.UserName,
-                                     ActivityType = activity.ActivityType,
-                                     Score = activity.Score,
-                                     TeamId = detail.TeamId,
-                                     TeamName = team.Name
-                                 }).GroupBy(a => a.TeamName);
+                                  join user in Repository.Users on activity.ApplicationUserId equals user.Id
+                                  join detail in Repository.UserDetails on activity.ApplicationUserId equals detail.ApplicationUserId
+                                  join team in Repository.Teams on detail.TeamId equals team.Id
+                                  select new ActivityViewModel
+                                  {
+                                      UserName = user.UserName,
+                                      ActivityType = activity.ActivityType,
+                                      Score = activity.Score,
+                                      TeamId = detail.TeamId,
+                                      TeamName = team.Name,
+                                      TimeStamp = activity.Timestamp,
+                                      UserLogin = user.Logins.FirstOrDefault()
+                                  }).GroupBy(a => a.TeamName).ToList();
+
 
             return View(userActivities);
         }

@@ -237,6 +237,7 @@
     <Compile Include="Models\FitnessProvider.cs" />
     <Compile Include="Models\FitnessProviderPayload.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\LeaderBoardViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Team.cs" />
     <Compile Include="Models\ToDoSViewModels.cs" />
