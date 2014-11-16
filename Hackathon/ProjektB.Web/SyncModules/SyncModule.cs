@@ -54,12 +54,7 @@ namespace ProjektB.Web.SyncModules
 
                 foreach (ApplicationUser user in dbUsers)
                 {
-                    List<FitnessProvider> providers = repository.FitnessProviders.Where(x => x.ApplicationUserId == user.Id).ToList()
-                    .Select(x => new FitnessProvider
-                    {
-                        ConnectionDetails = x.ConnectionDetails,
-                        Type = x.Type
-                    }).ToList();
+                    List<FitnessProvider> providers = repository.FitnessProviders.Where(x => x.ApplicationUserId == user.Id).ToList();
 
                     foreach (FitnessProvider provider in providers)
                     {
@@ -104,9 +99,32 @@ namespace ProjektB.Web.SyncModules
                                 {
                                     FitnessProviderFBPayload payload = JsonConvert.DeserializeObject<FitnessProviderFBPayload>(provider.ConnectionDetails);
 
+                                    DateTime lastCheck = payload.LastCheck;
+                                    int lastSteps = payload.LastSteps;
+
                                     //TODO: get a result, and process it!
-                                    fitbit.GetWorkoutByUserId(fitbitConsumerKey, fitbitConsumerSecret,
-                                        payload.AuthToken, payload.AuthTokenSecret);
+                                    Activity activity = fitbit.GetWorkoutByUserId(fitbitConsumerKey, fitbitConsumerSecret,
+                                        payload.AuthToken, payload.AuthTokenSecret, ref lastCheck, ref lastSteps);
+
+                                    //need to update the last check and last steps count if the activity came
+                                    //with new values
+                                    if (activity != null)
+                                    {
+                                        payload.LastCheck = lastCheck;
+                                        payload.LastSteps = lastSteps;
+                                        provider.ConnectionDetails = JsonConvert.SerializeObject(payload);
+
+                                        double score = activity.Values.Find(x => x.Unit == ActivityUnit.Calories).Value / 50;
+
+                                        repository.UserActivities.Add(new UserActivity
+                                        {
+                                            ActivityType = activity.ActivityType,
+                                            ApplicationUserId = user.Id,
+                                            ProviderType = provider.Type,
+                                            Score = score,
+                                            Timestamp = activity.Timestamp
+                                        });
+                                    }
                                 }
                                 break;
                         }

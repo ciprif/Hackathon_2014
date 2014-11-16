@@ -7,21 +7,26 @@ using System.Web.Http;
 using ProjektB.Web.Models.FitnessProviderModels;
 using System.Threading.Tasks;
 using ProjektB.Web.SyncModules;
+using ProjektB.Web.Models;
 
 namespace ProjektB.Web.Controllers
 {
     public class IntegrationController : ApiController
     {
-        // GET: api/Integration/5
         [HttpGet]
         [ActionName("Activity")]
         public async Task<IHttpActionResult> GetActivityById(string id)
         {
             //TODO: finish this method!
+            Repository repo = MvcApplication.Container.Resolve<Repository>();
+            
+            var startTime = DateTimeOffset.Now.AddMinutes(-50);
+            var recentActivities = repo.UserActivities.Where(x => x.ApplicationUserId == id && x.Timestamp > startTime);
+            double score = recentActivities.Sum(x => x.Score);
 
             Object result = new
             {
-                needsMovement = true
+                needsMovement = score < 0.9
             };
 
             return Json(result);

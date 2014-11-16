@@ -12,5 +12,9 @@ namespace ProjektB.Web.Models
         public string AuthTokenSecret { get; set; }
 
         public string UserId { get; set; }
+
+        public DateTime LastCheck { get; set; }
+
+        public int LastSteps { get; set; }
     }
 }
