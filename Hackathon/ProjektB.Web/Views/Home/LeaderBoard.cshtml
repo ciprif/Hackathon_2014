@@ -32,7 +32,7 @@
                         </tr>
                         @foreach (var activity in group.OrderByDescending(g => g.TimeStamp))
                         {
-                            <tr>
+                            <tr onclick="window.location =  '@Url.Action("UserStatistics", "Home", new { userId = activity .UserLogin.UserId })' ">
                                 <td>
                                     <div class="circular">
                                         <img src="@activity.UserImage" />

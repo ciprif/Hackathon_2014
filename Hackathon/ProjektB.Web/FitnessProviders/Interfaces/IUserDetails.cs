@@ -1,4 +1,5 @@
-﻿using ProjektB.Web.Models.FitnessProviderModels;
+﻿using ProjektB.Web.Models;
+using ProjektB.Web.Models.FitnessProviderModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,5 +24,6 @@ namespace ProjektB.Web.FitnessProviders.Interfaces
         public string ImagePath { get; set; }
         public IUserStats UserStats { get; set; }
         public IUserLocation Location { get; set; }
+        public ProviderType ProviderType { get; set; }
     }
 }

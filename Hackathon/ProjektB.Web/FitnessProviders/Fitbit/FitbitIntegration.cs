@@ -71,7 +71,8 @@ namespace ProjektB.Web.FitnessProviders.Fitbit
                 Birthday = profile.DateOfBirth,
                 DisplayName = profile.DisplayName,
                 Gender = profile.Gender == global::Fitbit.Models.Gender.FEMALE ? Interfaces.Gender.Female : Gender.Male,
-                ImagePath = profile.Avatar
+                ImagePath = profile.Avatar,
+                ProviderType = Models.ProviderType.FitBit
             };
         }
     }

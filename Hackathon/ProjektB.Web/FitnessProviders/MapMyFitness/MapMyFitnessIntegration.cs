@@ -57,7 +57,8 @@ namespace ProjektB.Web.FitnessProviders
                         UserInformation.Gender = (string)Content["gender"] == "M" ? Gender.Male : Gender.Female;
                         UserInformation.ImagePath = (string)Content["_links"]["image"][0]["href"];
                         UserInformation.UserId = (string)Content["id"];
-                        
+                        UserInformation.ProviderType = ProviderType.MapMyFitness;
+
                         UserInformation.Location = new MapMyFitnessLocation
                         {
                             City = (string)Content["location"]["locality"],
