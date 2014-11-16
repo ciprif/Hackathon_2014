@@ -9,6 +9,6 @@ namespace ProjektB.Web.SyncModules
 {
     public interface ISyncModule
     {
-        Task Sync(DateTime? fromDate);
+        Task Sync(DateTimeOffset? fromDate);
     }
 }

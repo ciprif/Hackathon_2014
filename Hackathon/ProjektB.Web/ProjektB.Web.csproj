@@ -249,6 +249,7 @@
     <Compile Include="Models\Team.cs" />
     <Compile Include="Models\ToDoSViewModels.cs" />
     <Compile Include="Models\UserActivity.cs" />
+    <Compile Include="Models\UserStatisticsViewModel.cs" />
     <Compile Include="Plumbing\WindsorControllerFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -349,6 +350,7 @@
     <Content Include="Views\Account\AddFitnessProvider.cshtml" />
     <Content Include="Views\Teams\Join.cshtml" />
     <Content Include="Views\Home\LeaderBoard.cshtml" />
+    <Content Include="Views\Home\UserStatistics.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
